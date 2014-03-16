@@ -2,7 +2,7 @@
  * PersonaIUG.java
  *
  *  Created on: 24/02/2014
- *      Author: Mario Jacob García Navarro. All Rights Reserved 2014.
+ *      Author: Mario Jacob Garcï¿½a Navarro. All Rights Reserved 2014.
  *		IN THIS PROGRAM WE WILL BE CREATING A LINKED LIST, ADDING AND DELETING ELEMENTS FROM IT. OTHER TASKS WILL BE DONE THROUGH.
  *		IT IS MAIN PURPOSE IS USING THE METHODS CONTAINED IN THE CLASS "LINKEDLIST".
  */
@@ -21,12 +21,11 @@ public class PersonaIUG extends Frame implements ActionListener
 	
 	private String datos, nombre, telefono, resultado;
 	
-	//private PersonaAD lista = new PersonaAD(); 
-	private PersonaADLL lista = new PersonaADLL(); //Utilizaremos una nueva clase AD, la cual hace uso de los métodos proporcionados en LinkedList
+	private PersonaAD lista = new PersonaAD(); 
 	
 	public PersonaIUG()
 	{
-		super("Directorio Telefónico (Linked List)");
+		super("Directorio Telefï¿½nico (Linked List)");
 		
 		//Inicializar los atributos
 		tfNombre   = new JTextField();
@@ -45,7 +44,7 @@ public class PersonaIUG extends Frame implements ActionListener
 		p1.add(new Label("Nombre"));
 		p1.add(tfNombre);
 		
-		p1.add(new Label("Teléfono"));
+		p1.add(new Label("Telï¿½fono"));
 		p1.add(tfTelefono);
 			
 		bCapturar = new JButton("Crear Nuevo Nodo de Persona");
@@ -76,7 +75,7 @@ public class PersonaIUG extends Frame implements ActionListener
 		bActualizar.addActionListener(this);
 		p1.add(bActualizar);
 		
-		bCancelar = new JButton("Cancelar Modificación");
+		bCancelar = new JButton("Cancelar Modificaciï¿½n");
 		bCancelar.addActionListener(this);
 		p1.add(bCancelar);
 		
@@ -158,10 +157,10 @@ public class PersonaIUG extends Frame implements ActionListener
 				taDatos.setText("Message Log\n--------------------------------------------------------------------------------------------------------------\nLa lista no tiene nodos.");
 				
 			if(str.equals("NOMBRE_VACIO"))
-				taDatos.setText("Message Log\n--------------------------------------------------------------------------------------------------------------\nEl campo 'Nombre' se encuentra vacío.");
+				taDatos.setText("Message Log\n--------------------------------------------------------------------------------------------------------------\nEl campo 'Nombre' se encuentra vacï¿½o.");
 				
 			if(str.equals("NO_ENCONTRADO"))
-				taDatos.setText("Message Log\n--------------------------------------------------------------------------------------------------------------\nEl nombre '" + tfNombre.getText() + "' no se encontró en la lista.");
+				taDatos.setText("Message Log\n--------------------------------------------------------------------------------------------------------------\nEl nombre '" + tfNombre.getText() + "' no se encontrï¿½ en la lista.");
 			
 			if(str.equals("CAMPO_VACIO"))
 				taDatos.setText("Message Log\n--------------------------------------------------------------------------------------------------------------\nTodos los campos deben contener datos.");
@@ -178,18 +177,18 @@ public class PersonaIUG extends Frame implements ActionListener
 			//1) Obtener datos de los TextFields
             datos = obtenerDatos();
             
-            //2) Comprobar que ninguno de los campos esté vacío, y en caso de que lo anterior no se cumpla, evitar enviar los datos en ese estado a los nodos
+            //2) Comprobar que ninguno de los campos estï¿½ vacï¿½o, y en caso de que lo anterior no se cumpla, evitar enviar los datos en ese estado a los nodos
 			if(datos.equals("CAMPO_VACIO"))
 				print("CAMPO_VACIO");
 			else
 			{
-				//3) Enviar los datos a la clase AD a través del metodo crearNodo
+				//3) Enviar los datos a la clase AD a travï¿½s del metodo crearNodo
 		        resultado = lista.crearNodo(datos);
 		
-		        //4) Desplegar el resultado de la operación
+		        //4) Desplegar el resultado de la operaciï¿½n
 		        print(resultado);
 		        
-		        //5) Quitar la información de los TextFields
+		        //5) Quitar la informaciï¿½n de los TextFields
 		        clrFields();
 			}
 		}
@@ -238,11 +237,11 @@ public class PersonaIUG extends Frame implements ActionListener
 				print(resultado);
 			else
 			{
-				//3) Llamar al método que borra a los nodos
+				//3) Llamar al mï¿½todo que borra a los nodos
 				resultado = lista.borrarNodo();
 				print(resultado);
 				
-				//Quitar la información de los TextFields
+				//Quitar la informaciï¿½n de los TextFields
 			    clrFields();
 			}
 		}
@@ -251,7 +250,7 @@ public class PersonaIUG extends Frame implements ActionListener
 		{
 			datos = obtenerDatos();
 			
-			//Comprobar que ninguno de los campos esté vacío, y en caso de que lo anterior no se cumpla, evitar enviar los datos en ese estado a los nodos
+			//Comprobar que ninguno de los campos estï¿½ vacï¿½o, y en caso de que lo anterior no se cumpla, evitar enviar los datos en ese estado a los nodos
 			if(datos.equals("CAMPO_VACIO"))
 				print("CAMPO_VACIO");
 			else
@@ -264,7 +263,7 @@ public class PersonaIUG extends Frame implements ActionListener
 				//Devolver los botones a su estado original
 				habilitarBotones(true);
 				
-				//Quitar la información de los TextFields
+				//Quitar la informaciï¿½n de los TextFields
 			    clrFields();
 			}
 		}
@@ -280,18 +279,18 @@ public class PersonaIUG extends Frame implements ActionListener
 			//1) Obtener datos de los TextFields
             datos = obtenerDatos();
             
-            //2) Comprobar que ninguno de los campos esté vacío, y en caso de que lo anterior no se cumpla, evitar enviar los datos en ese estado a los nodos
+            //2) Comprobar que ninguno de los campos estï¿½ vacï¿½o, y en caso de que lo anterior no se cumpla, evitar enviar los datos en ese estado a los nodos
 			if(datos.equals("CAMPO_VACIO"))
 				print("CAMPO_VACIO");
 			else
 			{
-				//3) Enviar los datos a la clase AD a través del metodo crearNodo
+				//3) Enviar los datos a la clase AD a travï¿½s del metodo crearNodo
 		        resultado = lista.crearNodoInicio(datos);
 		
-		        //4) Desplegar el resultado de la operación
+		        //4) Desplegar el resultado de la operaciï¿½n
 		        print(resultado);
 		        
-		        //5) Quitar la información de los TextFields
+		        //5) Quitar la informaciï¿½n de los TextFields
 		        clrFields();
 			}
 		}
