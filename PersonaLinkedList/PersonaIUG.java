@@ -16,7 +16,8 @@ import java.util.*;
 public class PersonaIUG extends Frame implements ActionListener
 {
 	private JTextField tfId,tfNombre, tfExistencia, tfMarca, tfPrecio;
-	private JButton    bCapturar, bConsultar, bConsultarNombre, bModificar, bActualizar, bCancelar, bBorrar, bCapturarInicio, bSalir;
+	private JButton    bCapturar, bConsultar, bConsultarNombre, bConsultarClave,
+					   bModificar, bActualizar, bCancelar, bBorrar, bCapturarInicio, bSalir;
 	private JTextArea  taDatos;
 	private JPanel 	   p1, p2;
 	
@@ -63,15 +64,19 @@ public class PersonaIUG extends Frame implements ActionListener
 		p1.add(new Label("Precio (Unitario)"));
 		p1.add(tfPrecio);
 			
-		bCapturar = new JButton("Crear Nuevo Nodo de Persona");
+		bCapturar = new JButton("Crear Articulo");
 		bCapturar.addActionListener(this);
 		p1.add(bCapturar);
 		
-		bConsultar = new JButton("Consultar Nodos de Personas");
+		bConsultar = new JButton("Consultar Articulos");
 		bConsultar.addActionListener(this);
 		p1.add(bConsultar);
 		
-		bConsultarNombre = new JButton("Consultar Personas por Nombre");
+		bConsultarClave = new JButton("Consultar Articulo por Clave");
+		bConsultarClave.addActionListener(this);
+		p1.add(bConsultarClave);
+
+		bConsultarNombre = new JButton("Consultar Articulo por Nombre");
 		bConsultarNombre.addActionListener(this);
 		p1.add(bConsultarNombre);
 		
@@ -151,44 +156,43 @@ public class PersonaIUG extends Frame implements ActionListener
 		bCancelar.setEnabled(!value);
 	}
 
-	private String consultarId()
+	// Se busca si existe y manda el resultado (Nombre o Clave)	
+	private String consulta(String elemento)
 	{
 		boolean vacia = false;
-		
-		clave = tfId.getText();
-		
-		vacia = lista.vacia();
-		if(vacia == true)
-			resultado = "LISTA_VACIA";
-		else
-		{
-			if(nombre.equals(""))
-				resultado = "NOMBRE_VACIO";
-			else
-				resultado = lista.consultarId(clave);
-		}
-			
-		return resultado;
 
-	}
-	
-	private String consultarNombre()
-	{
-		boolean vacia = false;
-		
-		nombre = tfNombre.getText();
-		
-		vacia = lista.vacia();
-		if(vacia == true)
-			resultado = "LISTA_VACIA";
+		if (elemento.equals("NOMBRE"))
+		{
+			nombre = tfNombre.getText();
+			vacia = lista.vacia();
+
+			if(vacia == true)
+				resultado = "LISTA_VACIA";
+			else
+			{
+				if(nombre.equals(""))
+					resultado = "NOMBRE_VACIO";
+				else
+					resultado = lista.consultarNombre(nombre);
+			}
+		}			
 		else
 		{
-			if(nombre.equals(""))
-				resultado = "NOMBRE_VACIO";
+			clave = tfId.getText();
+			vacia = lista.vacia();
+
+			if(vacia == true)
+				resultado = "LISTA_VACIA";
 			else
-				resultado = lista.consultarNombre(nombre);
+			{
+				if(clave.equals(""))
+					resultado = "NOMBRE_VACIO";
+				else
+					resultado = lista.consultarId(clave);
+			}
+
 		}
-			
+
 		return resultado;
 	}
 	
@@ -241,10 +245,16 @@ public class PersonaIUG extends Frame implements ActionListener
 			resultado = lista.consultarNodo();
 			print(resultado);
 		}
+
+		if (e.getSource() == bConsultarClave)
+		{
+			resultado = consulta("ID");
+			print(resultado);
+		}
 		
 		if (e.getSource() == bConsultarNombre)
 		{	
-			resultado = consultarNombre();
+			resultado = consulta("NOMBRE");
 			print(resultado);
 		}
 		
@@ -252,7 +262,7 @@ public class PersonaIUG extends Frame implements ActionListener
 		{
 			StringTokenizer st;
 			//1) Hacer una consulta de los datos para comprobar que exista el "Nombre" o "Registro"
-			resultado = consultarNombre();
+			resultado = consulta("NOMBRE");
 
 			//2) Hacer las validaciones correspondientes
 			if((resultado.equals("LISTA_VACIA"))||(resultado.equals("NO_ENCONTRADO"))||(resultado.equals("NOMBRE_VACIO")))
@@ -273,7 +283,7 @@ public class PersonaIUG extends Frame implements ActionListener
 		if(e.getSource() == bBorrar)
 		{
 			//1) Hacer una consulta de los datos para comprobar que exista el "Nombre" o "Registro"
-			resultado = consultarNombre();
+			resultado = consulta("NOMBRE");
 
 			//2) Hacer las validaciones correspondientes
 			if((resultado.equals("LISTA_VACIA"))||(resultado.equals("NO_ENCONTRADO"))||(resultado.equals("NOMBRE_VACIO")))
