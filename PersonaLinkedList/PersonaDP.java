@@ -5,6 +5,7 @@ public class PersonaDP
 	private String id;
 	private String nombre;
 	private String existencia;
+	private String marca;
 	private String precio;
 
 	private PersonaDP next;
@@ -15,6 +16,7 @@ public class PersonaDP
 		this.id         = "";
 		this.nombre     = "";
 		this.existencia = "";
+		this.marca		= "";
 		this.precio		= "";
 	}
 	
@@ -26,7 +28,8 @@ public class PersonaDP
 			this.id 		= st.nextToken();
 			this.nombre 	= st.nextToken();
 			this.existencia = st.nextToken();
-			this.precio=st.nextToken();
+			this.marca		= st.nextToken();
+			this.precio 	= st.nextToken();
 	}
 	
 	//Accessors (Getters)
@@ -43,6 +46,11 @@ public class PersonaDP
 	public String getExistencia()
 	{
 		return this.existencia;
+	}
+
+	public String getMarca()
+	{
+		return this.marca;
 	}
 
 	public String getPrecio()
@@ -72,6 +80,11 @@ public class PersonaDP
 		this.existencia = existencia;
 	}
 
+	public void setMarca(String existencia)
+	{
+		this.marca = marca;
+	}
+
 	public void setPrecio(String precio)
 	{
 		this.precio = precio;
@@ -85,6 +98,6 @@ public class PersonaDP
 	//Final String
 	public String toString()
 	{
-		return this.id+"_"+this.nombre+"_"+this.existencia+"_"+this.precio;
+		return this.id+"_"+this.nombre+"_"+this.existencia+"_"+this.marca+"_"+this.precio;
 	}
 }

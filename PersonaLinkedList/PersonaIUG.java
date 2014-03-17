@@ -2,7 +2,8 @@
  * PersonaIUG.java
  *
  *  Created on: 24/02/2014
- *      Author: Mario Jacob Garc�a Navarro. All Rights Reserved 2014.
+ *		Partial Project 2
+ *      Authors: Mario Jacob Garc�a Navarro & Luis Arturo Mendoza Reyes. All Rights Reserved 2014.
  *		IN THIS PROGRAM WE WILL BE CREATING A LINKED LIST, ADDING AND DELETING ELEMENTS FROM IT. OTHER TASKS WILL BE DONE THROUGH.
  *		IT IS MAIN PURPOSE IS USING THE METHODS CONTAINED IN THE CLASS "LINKEDLIST".
  */
@@ -14,12 +15,12 @@ import java.util.*;
 
 public class PersonaIUG extends Frame implements ActionListener
 {
-	private JTextField tfId,tfNombre, tfExistencia, tfPrecio;
+	private JTextField tfId,tfNombre, tfExistencia, tfMarca, tfPrecio;
 	private JButton    bCapturar, bConsultar, bConsultarNombre, bModificar, bActualizar, bCancelar, bBorrar, bCapturarInicio, bSalir;
 	private JTextArea  taDatos;
 	private JPanel 	   p1, p2;
 	
-	private String clave, datos, nombre, existencia, precio, resultado;
+	private String clave, datos, nombre, existencia, precio, marca, resultado;
 	
 	private PersonaAD lista = new PersonaAD(); 
 	
@@ -39,11 +40,12 @@ public class PersonaIUG extends Frame implements ActionListener
 		datos      		= "";
 		nombre    		= "";
 		existencia   	= "";
+		marca 			= "";
 		precio 			= "";
 		resultado 		= "";
 		
 		//Agregar los atributos a los paneles
-		p1.setLayout(new GridLayout(9,2));
+		p1.setLayout(new GridLayout(10,2));
 		
 		p1.add(new Label("Clave"));
 		p1.add(tfId);
@@ -53,6 +55,9 @@ public class PersonaIUG extends Frame implements ActionListener
 		
 		p1.add(new Label("Existencia")); 
 		p1.add(tfExistencia);
+
+		p1.add(new Label("Marca")); 
+		p1.add(tfMarca);
 
 		p1.add(new Label("Precio (Unitario)"));
 		p1.add(tfPrecio);
@@ -112,6 +117,7 @@ public class PersonaIUG extends Frame implements ActionListener
 		tfId.setText("");
 		tfNombre.setText("");
 		tfExistencia.setText("");
+		tfMarca.setText("");
 		tfPrecio.setText("");
 	}
 	
@@ -120,12 +126,13 @@ public class PersonaIUG extends Frame implements ActionListener
 		clave      = tfId.getText();
 		nombre     = tfNombre.getText();
         existencia = tfExistencia.getText();
+        marca 	   = tfMarca.getText();
         precio 	   = tfPrecio.getText();
 		
-		if(precio.equals("") || clave.equals("")||nombre.equals("")||existencia.equals(""))
+		if(marca.equals("") || precio.equals("") || clave.equals("")||nombre.equals("")||existencia.equals(""))
 			datos = "CAMPO_VACIO";
         else
-        	datos = clave+"_"+nombre+"_"+existencia+"_"+precio;
+        	datos = clave+"_"+nombre+"_"+existencia+"_"+marca+"_"+precio;
 
         return datos;
 	}
