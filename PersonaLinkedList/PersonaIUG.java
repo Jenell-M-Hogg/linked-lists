@@ -14,23 +14,24 @@ import java.util.*;
 
 public class PersonaIUG extends Frame implements ActionListener
 {
-	private JTextField tfId,tfNombre, tfExistencia;
+	private JTextField tfId,tfNombre, tfExistencia, tfPrecio;
 	private JButton    bCapturar, bConsultar, bConsultarNombre, bModificar, bActualizar, bCancelar, bBorrar, bCapturarInicio, bSalir;
 	private JTextArea  taDatos;
 	private JPanel 	   p1, p2;
 	
-	private String clave, datos, nombre, existencia, resultado;
+	private String clave, datos, nombre, existencia, precio, resultado;
 	
 	private PersonaAD lista = new PersonaAD(); 
 	
 	public PersonaIUG()
 	{
-		super("Directorio Telefónico (Linked List)");
+		super("Proyecto  (Linked List)");
 		
 		//Inicializar los atributos
 		tfId 	   		= new JTextField();
 		tfNombre   		= new JTextField();
 		tfExistencia 	= new JTextField();
+		tfPrecio		= new JTextField();
 		taDatos    		= new JTextArea(13, 40);
 		p1  	   		= new JPanel();
 		p2  	   		= new JPanel();
@@ -38,10 +39,11 @@ public class PersonaIUG extends Frame implements ActionListener
 		datos      		= "";
 		nombre    		= "";
 		existencia   	= "";
+		precio 			= "";
 		resultado 		= "";
 		
 		//Agregar los atributos a los paneles
-		p1.setLayout(new GridLayout(8,2));
+		p1.setLayout(new GridLayout(9,2));
 		
 		p1.add(new Label("Clave"));
 		p1.add(tfId);
@@ -49,7 +51,11 @@ public class PersonaIUG extends Frame implements ActionListener
 		p1.add(new Label("Nombre"));
 		p1.add(tfNombre);
 		
-		p1.add(new Label("Existencia")); p1.add(tfExistencia);
+		p1.add(new Label("Existencia")); 
+		p1.add(tfExistencia);
+
+		p1.add(new Label("Precio (Unitario)"));
+		p1.add(tfPrecio);
 			
 		bCapturar = new JButton("Crear Nuevo Nodo de Persona");
 		bCapturar.addActionListener(this);
@@ -106,18 +112,20 @@ public class PersonaIUG extends Frame implements ActionListener
 		tfId.setText("");
 		tfNombre.setText("");
 		tfExistencia.setText("");
+		tfPrecio.setText("");
 	}
 	
 	private String obtenerDatos()
 	{
-		clave    = tfId.getText();
-		nombre   = tfNombre.getText();
+		clave      = tfId.getText();
+		nombre     = tfNombre.getText();
         existencia = tfExistencia.getText();
+        precio 	   = tfPrecio.getText();
 		
-		if(clave.equals("")||nombre.equals("")||existencia.equals(""))
+		if(precio.equals("") || clave.equals("")||nombre.equals("")||existencia.equals(""))
 			datos = "CAMPO_VACIO";
         else
-        	datos = clave+"_"+nombre+"_"+existencia;
+        	datos = clave+"_"+nombre+"_"+existencia+"_"+precio;
 
         return datos;
 	}
