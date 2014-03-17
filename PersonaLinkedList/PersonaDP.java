@@ -1,16 +1,23 @@
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class PersonaDP
 {
+	private String id;
 	private String nombre;
-	private String telefono;
+	private String existencia;
+	private String marca;
+	private String precio;
+
 	private PersonaDP next;
 	
 	//Constructors
 	public PersonaDP()
 	{
-		this.nombre   = "";
-		this.telefono = "";
+		this.id         = "";
+		this.nombre     = "";
+		this.existencia = "";
+		this.marca		= "";
+		this.precio		= "";
 	}
 	
 	//String Tokenizer
@@ -18,19 +25,37 @@ public class PersonaDP
 	{
 		StringTokenizer st = new StringTokenizer(datos, "_");
 		
-		this.nombre   = st.nextToken();
-		this.telefono = st.nextToken();
+			this.id 		= st.nextToken();
+			this.nombre 	= st.nextToken();
+			this.existencia = st.nextToken();
+			this.marca		= st.nextToken();
+			this.precio 	= st.nextToken();
 	}
 	
 	//Accessors (Getters)
+	public String getId()
+	{
+		return this.id;
+	}
+
 	public String getNombre()
 	{
 		return this.nombre;
 	}
 	
-	public String getTelefono()
+	public String getExistencia()
 	{
-		return this.telefono;
+		return this.existencia;
+	}
+
+	public String getMarca()
+	{
+		return this.marca;
+	}
+
+	public String getPrecio()
+	{
+		return this.precio;
 	}
 	
 		
@@ -40,14 +65,29 @@ public class PersonaDP
 	}
 	
 	//Mutators(Setters)
+	public void setId(String id)
+	{
+		this.id = id;
+	}
+
 	public void setNombre(String nombre)
 	{
 		this.nombre = nombre;
 	}
 	
-	public void setTelefono(String telefono)
+	public void setExistencia(String existencia)
 	{
-		this.telefono = telefono;
+		this.existencia = existencia;
+	}
+
+	public void setMarca(String existencia)
+	{
+		this.marca = marca;
+	}
+
+	public void setPrecio(String precio)
+	{
+		this.precio = precio;
 	}
 	
 	public void setNext(PersonaDP dir)
@@ -58,6 +98,6 @@ public class PersonaDP
 	//Final String
 	public String toString()
 	{
-		return this.nombre+"_"+this.telefono;
+		return this.id+"_"+this.nombre+"_"+this.existencia+"_"+this.marca+"_"+this.precio;
 	}
 }

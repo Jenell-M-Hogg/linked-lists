@@ -14,7 +14,7 @@ public class PersonaAD
 		try
 		{
 			//1) Abrir Archivo
-			archivoEntrada = new BufferedReader(new FileReader("Datos.txt"));
+			archivoEntrada = new BufferedReader(new FileReader("Articulos.txt"));
 			
 			//2) Procesar datos del archivo
 			while(archivoEntrada.ready())
@@ -100,6 +100,36 @@ public class PersonaAD
 		}
 		return datos;
 	}
+
+	public String consultarId(String id)
+	{
+		String datos = "";
+		boolean encontrado = false;
+		
+		if(primero == null)
+			datos = "LISTA_VACÍA"; 
+		else
+		{
+			actual = primero;
+			while((actual != null)&&(encontrado == false))
+			{
+				String clave = actual.getId();
+				if(clave.equals(id))
+				{
+					datos = actual.toString();
+					encontrado = true;
+				}
+				else
+				{
+					anterior = actual;
+					actual = actual.getNext();
+				}
+			}
+			if(encontrado == false)
+					datos = "NO_ENCONTRADO";
+		}
+		return datos;
+	}
 	
 	public String consultarNombre(String nombre)
 	{
@@ -134,13 +164,13 @@ public class PersonaAD
 	public String modificarNodo(String datos)
 	{
 		StringTokenizer st = new StringTokenizer(datos, "_");
-		String nombre = "", telefono = "";
+		String nombre = "", existencia = "";
 		
 		nombre   = st.nextToken();
-		telefono = st.nextToken();
+		existencia = st.nextToken();
 		
 		actual.setNombre(nombre);
-		actual.setTelefono(telefono);
+		actual.setExistencia(existencia);
 		
 		return datos;
 	}
@@ -174,7 +204,7 @@ public class PersonaAD
 			try
 			{
 				//1) Abrir archivo
-				archivoSalida = new PrintWriter(new FileWriter("Datos.txt"));
+				archivoSalida = new PrintWriter(new FileWriter("Articulos.txt"));
 				
 				//2) Procesar datos 
 				actual = primero;

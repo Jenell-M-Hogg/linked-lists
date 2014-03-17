@@ -2,7 +2,8 @@
  * PersonaIUG.java
  *
  *  Created on: 24/02/2014
- *      Author: Mario Jacob Garc�a Navarro. All Rights Reserved 2014.
+ *		Partial Project 2
+ *      Authors: Mario Jacob Garc�a Navarro & Luis Arturo Mendoza Reyes. All Rights Reserved 2014.
  *		IN THIS PROGRAM WE WILL BE CREATING A LINKED LIST, ADDING AND DELETING ELEMENTS FROM IT. OTHER TASKS WILL BE DONE THROUGH.
  *		IT IS MAIN PURPOSE IS USING THE METHODS CONTAINED IN THE CLASS "LINKEDLIST".
  */
@@ -14,48 +15,68 @@ import java.util.*;
 
 public class PersonaIUG extends Frame implements ActionListener
 {
-	private JTextField tfNombre, tfTelefono;
-	private JButton    bCapturar, bConsultar, bConsultarNombre, bModificar, bActualizar, bCancelar, bBorrar, bCapturarInicio, bSalir;
+	private JTextField tfId,tfNombre, tfExistencia, tfMarca, tfPrecio;
+	private JButton    bCapturar, bConsultar, bConsultarNombre, bConsultarClave,
+					   bModificar, bActualizar, bCancelar, bBorrar, bCapturarInicio, bSalir;
 	private JTextArea  taDatos;
 	private JPanel 	   p1, p2;
 	
-	private String datos, nombre, telefono, resultado;
+	private String clave, datos, nombre, existencia, precio, marca, resultado;
 	
 	private PersonaAD lista = new PersonaAD(); 
 	
 	public PersonaIUG()
 	{
-		super("Directorio Telef�nico (Linked List)");
+		super("Proyecto  (Linked List)");
 		
 		//Inicializar los atributos
-		tfNombre   = new JTextField();
-		tfTelefono = new JTextField();
-		taDatos    = new JTextArea(13, 40);
-		p1  	   = new JPanel();
-		p2  	   = new JPanel();
-		datos      = "";
-		nombre     = "";
-		telefono   = "";
-		resultado  = "";
+		tfId 	   		= new JTextField();
+		tfNombre   		= new JTextField();
+		tfExistencia 	= new JTextField();
+		tfPrecio		= new JTextField();
+		tfMarca			= new JTextField();
+		taDatos    		= new JTextArea(13, 40);
+		p1  	   		= new JPanel();
+		p2  	   		= new JPanel();
+		clave      		= "";
+		datos      		= "";
+		nombre    		= "";
+		existencia   	= "";
+		marca 			= "";
+		precio 			= "";
+		resultado 		= "";
 		
 		//Agregar los atributos a los paneles
-		p1.setLayout(new GridLayout(7,2));
+		p1.setLayout(new GridLayout(10,2));
 		
+		p1.add(new Label("Clave"));
+		p1.add(tfId);
+
 		p1.add(new Label("Nombre"));
 		p1.add(tfNombre);
+
+		p1.add(new Label("Marca")); 
+		p1.add(tfMarca);
 		
-		p1.add(new Label("Tel�fono"));
-		p1.add(tfTelefono);
+		p1.add(new Label("Existencia")); 
+		p1.add(tfExistencia);
+
+		p1.add(new Label("Precio (Unitario)"));
+		p1.add(tfPrecio);
 			
-		bCapturar = new JButton("Crear Nuevo Nodo de Persona");
+		bCapturar = new JButton("Crear Articulo");
 		bCapturar.addActionListener(this);
 		p1.add(bCapturar);
 		
-		bConsultar = new JButton("Consultar Nodos de Personas");
+		bConsultar = new JButton("Consultar Articulos");
 		bConsultar.addActionListener(this);
 		p1.add(bConsultar);
 		
-		bConsultarNombre = new JButton("Consultar Personas por Nombre");
+		bConsultarClave = new JButton("Consultar Articulo por Clave");
+		bConsultarClave.addActionListener(this);
+		p1.add(bConsultarClave);
+
+		bConsultarNombre = new JButton("Consultar Articulo por Nombre");
 		bConsultarNombre.addActionListener(this);
 		p1.add(bConsultarNombre);
 		
@@ -99,19 +120,25 @@ public class PersonaIUG extends Frame implements ActionListener
 	
 	public void clrFields()
 	{
+		tfId.setText("");
 		tfNombre.setText("");
-		tfTelefono.setText("");
+		tfExistencia.setText("");
+		tfMarca.setText("");
+		tfPrecio.setText("");
 	}
 	
 	private String obtenerDatos()
 	{
-		nombre = tfNombre.getText();
-        telefono = tfTelefono.getText();
+		clave      = tfId.getText();
+		nombre     = tfNombre.getText();
+        existencia = tfExistencia.getText();
+        marca 	   = tfMarca.getText();
+        precio 	   = tfPrecio.getText();
 		
-		if((nombre.equals(""))||(telefono.equals("")))
+		if(marca.equals("") || precio.equals("") || clave.equals("")||nombre.equals("")||existencia.equals(""))
 			datos = "CAMPO_VACIO";
         else
-        	datos = nombre+"_"+telefono;
+        	datos = clave+"_"+nombre+"_"+existencia+"_"+marca+"_"+precio;
 
         return datos;
 	}
@@ -128,24 +155,44 @@ public class PersonaIUG extends Frame implements ActionListener
 		bActualizar.setEnabled(!value);
 		bCancelar.setEnabled(!value);
 	}
-	
-	private String consultarNombre()
+
+	// Se busca si existe y manda el resultado (Nombre o Clave)	
+	private String consulta(String elemento)
 	{
 		boolean vacia = false;
-		
-		nombre = tfNombre.getText();
-		
-		vacia = lista.vacia();
-		if(vacia == true)
-			resultado = "LISTA_VACIA";
+
+		if (elemento.equals("NOMBRE"))
+		{
+			nombre = tfNombre.getText();
+			vacia = lista.vacia();
+
+			if(vacia == true)
+				resultado = "LISTA_VACIA";
+			else
+			{
+				if(nombre.equals(""))
+					resultado = "NOMBRE_VACIO";
+				else
+					resultado = lista.consultarNombre(nombre);
+			}
+		}			
 		else
 		{
-			if(nombre.equals(""))
-				resultado = "NOMBRE_VACIO";
+			clave = tfId.getText();
+			vacia = lista.vacia();
+
+			if(vacia == true)
+				resultado = "LISTA_VACIA";
 			else
-				resultado = lista.consultarNombre(nombre);
+			{
+				if(clave.equals(""))
+					resultado = "NOMBRE_VACIO";
+				else
+					resultado = lista.consultarId(clave);
+			}
+
 		}
-			
+
 		return resultado;
 	}
 	
@@ -198,10 +245,16 @@ public class PersonaIUG extends Frame implements ActionListener
 			resultado = lista.consultarNodo();
 			print(resultado);
 		}
+
+		if (e.getSource() == bConsultarClave)
+		{
+			resultado = consulta("ID");
+			print(resultado);
+		}
 		
 		if (e.getSource() == bConsultarNombre)
 		{	
-			resultado = consultarNombre();
+			resultado = consulta("NOMBRE");
 			print(resultado);
 		}
 		
@@ -209,7 +262,7 @@ public class PersonaIUG extends Frame implements ActionListener
 		{
 			StringTokenizer st;
 			//1) Hacer una consulta de los datos para comprobar que exista el "Nombre" o "Registro"
-			resultado = consultarNombre();
+			resultado = consulta("NOMBRE");
 
 			//2) Hacer las validaciones correspondientes
 			if((resultado.equals("LISTA_VACIA"))||(resultado.equals("NO_ENCONTRADO"))||(resultado.equals("NOMBRE_VACIO")))
@@ -220,9 +273,9 @@ public class PersonaIUG extends Frame implements ActionListener
 				st = new StringTokenizer(resultado, "_");
 				
 				nombre = st.nextToken();
-				telefono = st.nextToken();
+				existencia = st.nextToken();
 				tfNombre.setText(nombre);
-				tfTelefono.setText(telefono);
+				tfExistencia.setText(existencia);
 				habilitarBotones(false);
 			}
 		}
@@ -230,7 +283,7 @@ public class PersonaIUG extends Frame implements ActionListener
 		if(e.getSource() == bBorrar)
 		{
 			//1) Hacer una consulta de los datos para comprobar que exista el "Nombre" o "Registro"
-			resultado = consultarNombre();
+			resultado = consulta("NOMBRE");
 
 			//2) Hacer las validaciones correspondientes
 			if((resultado.equals("LISTA_VACIA"))||(resultado.equals("NO_ENCONTRADO"))||(resultado.equals("NOMBRE_VACIO")))
