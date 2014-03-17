@@ -100,6 +100,36 @@ public class PersonaAD
 		}
 		return datos;
 	}
+
+	public String consularId(String id)
+	{
+		String datos = "";
+		boolean encontrado = false;
+		
+		if(primero == null)
+			datos = "LISTA_VACÍA";
+		else
+		{
+			actual = primero;
+			while((actual != null)&&(encontrado == false))
+			{
+				String clave = actual.getId();
+				if(clave.equals(id))
+				{
+					datos = actual.toString();
+					encontrado = true;
+				}
+				else
+				{
+					anterior = actual;
+					actual = actual.getNext();
+				}
+			}
+			if(encontrado == false)
+					datos = "NO_ENCONTRADO";
+		}
+		return datos;
+	}
 	
 	public String consultarNombre(String nombre)
 	{

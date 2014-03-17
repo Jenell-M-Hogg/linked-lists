@@ -14,12 +14,12 @@ import java.util.*;
 
 public class PersonaIUG extends Frame implements ActionListener
 {
-	private JTextField tfNombre, tfTelefono;
+	private JTextField tfId,tfNombre, tfTelefono;
 	private JButton    bCapturar, bConsultar, bConsultarNombre, bModificar, bActualizar, bCancelar, bBorrar, bCapturarInicio, bSalir;
 	private JTextArea  taDatos;
 	private JPanel 	   p1, p2;
 	
-	private String datos, nombre, telefono, resultado;
+	private String clave, datos, nombre, telefono, resultado;
 	
 	private PersonaAD lista = new PersonaAD(); 
 	
@@ -28,24 +28,28 @@ public class PersonaIUG extends Frame implements ActionListener
 		super("Directorio Telef�nico (Linked List)");
 		
 		//Inicializar los atributos
+		tfId 	   = new JTextField();
 		tfNombre   = new JTextField();
 		tfTelefono = new JTextField();
 		taDatos    = new JTextArea(13, 40);
 		p1  	   = new JPanel();
 		p2  	   = new JPanel();
+		clave      = "";
 		datos      = "";
 		nombre     = "";
 		telefono   = "";
 		resultado  = "";
 		
 		//Agregar los atributos a los paneles
-		p1.setLayout(new GridLayout(7,2));
+		p1.setLayout(new GridLayout(8,2));
 		
+		p1.add(new Label("Clave"));
+		p1.add(tfId);
+
 		p1.add(new Label("Nombre"));
 		p1.add(tfNombre);
 		
-		p1.add(new Label("Tel�fono"));
-		p1.add(tfTelefono);
+		p1.add(new Label("Telefono")); p1.add(tfTelefono);
 			
 		bCapturar = new JButton("Crear Nuevo Nodo de Persona");
 		bCapturar.addActionListener(this);
@@ -99,19 +103,21 @@ public class PersonaIUG extends Frame implements ActionListener
 	
 	public void clrFields()
 	{
+		tfId.setText("");
 		tfNombre.setText("");
 		tfTelefono.setText("");
 	}
 	
 	private String obtenerDatos()
 	{
-		nombre = tfNombre.getText();
+		clave    = tfId.getText();
+		nombre   = tfNombre.getText();
         telefono = tfTelefono.getText();
 		
-		if((nombre.equals(""))||(telefono.equals("")))
+		if(clave.equals("")||nombre.equals("")||telefono.equals(""))
 			datos = "CAMPO_VACIO";
         else
-        	datos = nombre+"_"+telefono;
+        	datos = clave+"_"+nombre+"_"+telefono;
 
         return datos;
 	}
@@ -127,6 +133,27 @@ public class PersonaIUG extends Frame implements ActionListener
 		
 		bActualizar.setEnabled(!value);
 		bCancelar.setEnabled(!value);
+	}
+
+	private String consultarId()
+	{
+		boolean vacia = false;
+		
+		clave = tfId.getText();
+		
+		vacia = lista.vacia();
+		if(vacia == true)
+			resultado = "LISTA_VACIA";
+		else
+		{
+			if(nombre.equals(""))
+				resultado = "NOMBRE_VACIO";
+			else
+				resultado = lista.consultarId(clave);
+		}
+			
+		return resultado;
+
 	}
 	
 	private String consultarNombre()
