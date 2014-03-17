@@ -164,13 +164,13 @@ public class PersonaAD
 	public String modificarNodo(String datos)
 	{
 		StringTokenizer st = new StringTokenizer(datos, "_");
-		String nombre = "", telefono = "";
+		String nombre = "", existencia = "";
 		
 		nombre   = st.nextToken();
-		telefono = st.nextToken();
+		existencia = st.nextToken();
 		
 		actual.setNombre(nombre);
-		actual.setTelefono(telefono);
+		actual.setExistencia(existencia);
 		
 		return datos;
 	}

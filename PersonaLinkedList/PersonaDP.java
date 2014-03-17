@@ -4,7 +4,7 @@ public class PersonaDP
 {
 	private String id;
 	private String nombre;
-	private String telefono;
+	private String existencia;
 
 	private PersonaDP next;
 	
@@ -13,7 +13,7 @@ public class PersonaDP
 	{
 		this.id       = "";
 		this.nombre   = "";
-		this.telefono = "";
+		this.existencia = "";
 	}
 	
 	//String Tokenizer
@@ -21,9 +21,9 @@ public class PersonaDP
 	{
 		StringTokenizer st = new StringTokenizer(datos, "_");
 		
-		this.id       = st.nextToken();
-		this.nombre   = st.nextToken();
-		this.telefono = st.nextToken();
+		this.id       	= st.nextToken();
+		this.nombre  	= st.nextToken();
+		this.existencia = st.nextToken();
 	}
 	
 	//Accessors (Getters)
@@ -37,9 +37,9 @@ public class PersonaDP
 		return this.nombre;
 	}
 	
-	public String getTelefono()
+	public String getExistencia()
 	{
-		return this.telefono;
+		return this.existencia;
 	}
 	
 		
@@ -59,9 +59,9 @@ public class PersonaDP
 		this.nombre = nombre;
 	}
 	
-	public void setTelefono(String telefono)
+	public void setExistencia(String existencia)
 	{
-		this.telefono = telefono;
+		this.existencia = existencia;
 	}
 	
 	public void setNext(PersonaDP dir)
@@ -72,6 +72,6 @@ public class PersonaDP
 	//Final String
 	public String toString()
 	{
-		return this.id+"_"+this.nombre+"_"+this.telefono;
+		return this.id+"_"+this.nombre+"_"+this.existencia;
 	}
 }

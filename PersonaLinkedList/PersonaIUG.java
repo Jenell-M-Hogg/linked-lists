@@ -14,31 +14,31 @@ import java.util.*;
 
 public class PersonaIUG extends Frame implements ActionListener
 {
-	private JTextField tfId,tfNombre, tfTelefono;
+	private JTextField tfId,tfNombre, tfExistencia;
 	private JButton    bCapturar, bConsultar, bConsultarNombre, bModificar, bActualizar, bCancelar, bBorrar, bCapturarInicio, bSalir;
 	private JTextArea  taDatos;
 	private JPanel 	   p1, p2;
 	
-	private String clave, datos, nombre, telefono, resultado;
+	private String clave, datos, nombre, existencia, resultado;
 	
 	private PersonaAD lista = new PersonaAD(); 
 	
 	public PersonaIUG()
 	{
-		super("Directorio Telef�nico (Linked List)");
+		super("Directorio Telefónico (Linked List)");
 		
 		//Inicializar los atributos
-		tfId 	   = new JTextField();
-		tfNombre   = new JTextField();
-		tfTelefono = new JTextField();
-		taDatos    = new JTextArea(13, 40);
-		p1  	   = new JPanel();
-		p2  	   = new JPanel();
-		clave      = "";
-		datos      = "";
-		nombre     = "";
-		telefono   = "";
-		resultado  = "";
+		tfId 	   		= new JTextField();
+		tfNombre   		= new JTextField();
+		tfExistencia 	= new JTextField();
+		taDatos    		= new JTextArea(13, 40);
+		p1  	   		= new JPanel();
+		p2  	   		= new JPanel();
+		clave      		= "";
+		datos      		= "";
+		nombre    		= "";
+		existencia   	= "";
+		resultado 		= "";
 		
 		//Agregar los atributos a los paneles
 		p1.setLayout(new GridLayout(8,2));
@@ -49,7 +49,7 @@ public class PersonaIUG extends Frame implements ActionListener
 		p1.add(new Label("Nombre"));
 		p1.add(tfNombre);
 		
-		p1.add(new Label("Telefono")); p1.add(tfTelefono);
+		p1.add(new Label("Existencia")); p1.add(tfExistencia);
 			
 		bCapturar = new JButton("Crear Nuevo Nodo de Persona");
 		bCapturar.addActionListener(this);
@@ -105,19 +105,19 @@ public class PersonaIUG extends Frame implements ActionListener
 	{
 		tfId.setText("");
 		tfNombre.setText("");
-		tfTelefono.setText("");
+		tfExistencia.setText("");
 	}
 	
 	private String obtenerDatos()
 	{
 		clave    = tfId.getText();
 		nombre   = tfNombre.getText();
-        telefono = tfTelefono.getText();
+        existencia = tfExistencia.getText();
 		
-		if(clave.equals("")||nombre.equals("")||telefono.equals(""))
+		if(clave.equals("")||nombre.equals("")||existencia.equals(""))
 			datos = "CAMPO_VACIO";
         else
-        	datos = clave+"_"+nombre+"_"+telefono;
+        	datos = clave+"_"+nombre+"_"+existencia;
 
         return datos;
 	}
@@ -247,9 +247,9 @@ public class PersonaIUG extends Frame implements ActionListener
 				st = new StringTokenizer(resultado, "_");
 				
 				nombre = st.nextToken();
-				telefono = st.nextToken();
+				existencia = st.nextToken();
 				tfNombre.setText(nombre);
-				tfTelefono.setText(telefono);
+				tfExistencia.setText(existencia);
 				habilitarBotones(false);
 			}
 		}
