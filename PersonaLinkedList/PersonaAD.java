@@ -14,7 +14,7 @@ public class PersonaAD
 		try
 		{
 			//1) Abrir Archivo
-			archivoEntrada = new BufferedReader(new FileReader("Datos.txt"));
+			archivoEntrada = new BufferedReader(new FileReader("Articulos.txt"));
 			
 			//2) Procesar datos del archivo
 			while(archivoEntrada.ready())
@@ -204,7 +204,7 @@ public class PersonaAD
 			try
 			{
 				//1) Abrir archivo
-				archivoSalida = new PrintWriter(new FileWriter("Datos.txt"));
+				archivoSalida = new PrintWriter(new FileWriter("Articulos.txt"));
 				
 				//2) Procesar datos 
 				actual = primero;
