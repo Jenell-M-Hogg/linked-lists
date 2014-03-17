@@ -101,7 +101,7 @@ public class PersonaAD
 		return datos;
 	}
 
-	public String consularId(String id)
+	public String consultarId(String id)
 	{
 		String datos = "";
 		boolean encontrado = false;
