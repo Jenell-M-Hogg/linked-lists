@@ -107,7 +107,7 @@ public class PersonaAD
 		boolean encontrado = false;
 		
 		if(primero == null)
-			datos = "LISTA_VACÍA";
+			datos = "LISTA_VACÍA"; 
 		else
 		{
 			actual = primero;
