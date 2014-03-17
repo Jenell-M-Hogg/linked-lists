@@ -33,6 +33,7 @@ public class PersonaIUG extends Frame implements ActionListener
 		tfNombre   		= new JTextField();
 		tfExistencia 	= new JTextField();
 		tfPrecio		= new JTextField();
+		tfMarca			= new JTextField();
 		taDatos    		= new JTextArea(13, 40);
 		p1  	   		= new JPanel();
 		p2  	   		= new JPanel();

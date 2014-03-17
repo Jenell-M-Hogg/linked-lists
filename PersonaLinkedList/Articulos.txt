@@ -1,3 +1,2 @@
-1_Pantalla LG_15_6000
-2_Mouse Perfect_10_467
-3_Calculadora CASIO_90_500
+1_Calculadora_30_CASIO_250
+2_Ventilador_6_Massey_80
