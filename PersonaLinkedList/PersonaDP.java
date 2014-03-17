@@ -1,4 +1,4 @@
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class PersonaDP
 {
@@ -23,10 +23,10 @@ public class PersonaDP
 	{
 		StringTokenizer st = new StringTokenizer(datos, "_");
 		
-		this.id 		= st.nextToken();
-		this.nombre 	= st.nextToken();
-		this.existencia = st.nextToken();
-		this.precio 	= st.nextToken();
+			this.id 		= st.nextToken();
+			this.nombre 	= st.nextToken();
+			this.existencia = st.nextToken();
+			this.precio=st.nextToken();
 	}
 	
 	//Accessors (Getters)
