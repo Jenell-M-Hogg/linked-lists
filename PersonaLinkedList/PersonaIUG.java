@@ -53,12 +53,12 @@ public class PersonaIUG extends Frame implements ActionListener
 
 		p1.add(new Label("Nombre"));
 		p1.add(tfNombre);
-		
-		p1.add(new Label("Existencia")); 
-		p1.add(tfExistencia);
 
 		p1.add(new Label("Marca")); 
 		p1.add(tfMarca);
+		
+		p1.add(new Label("Existencia")); 
+		p1.add(tfExistencia);
 
 		p1.add(new Label("Precio (Unitario)"));
 		p1.add(tfPrecio);
