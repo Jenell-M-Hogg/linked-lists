@@ -2,13 +2,13 @@ import javax.swing.*;
 import java.util.*;
 import java.io.*;
 
-public class PersonaAD
+public class ArticulosAD
 {
-	private PersonaDP primero, ultimo, actual, anterior;
+	private ArticulosDP primero, ultimo, actual, anterior;
 	private PrintWriter archivoSalida;
 	private BufferedReader archivoEntrada;
 	
-	public PersonaAD()
+	public ArticulosAD()
 	{
 		String datos = "";
 		try
@@ -38,14 +38,14 @@ public class PersonaAD
 		String respuesta = "Nuevo nodo creado: ";
 		if(primero == null)
 		{
-			primero = new PersonaDP(datos);
+			primero = new ArticulosDP(datos);
 			ultimo = primero;
 			ultimo.setNext(null);
 			return respuesta + datos;
 		}
 		else
 		{
-			actual = new PersonaDP(datos);
+			actual = new ArticulosDP(datos);
 			ultimo.setNext(actual); //Link
 			ultimo = actual;
 			ultimo.setNext(null);
@@ -58,7 +58,7 @@ public class PersonaAD
 		String respuesta = "Nuevo nodo creado: ";
 		if(primero == null)
 		{
-			primero = new PersonaDP(datos);
+			primero = new ArticulosDP(datos);
 			ultimo = primero;
 			ultimo.setNext(null);
 			return respuesta + datos;
@@ -66,7 +66,7 @@ public class PersonaAD
 		else
 		{
 			actual = primero;
-			primero = new PersonaDP(datos);
+			primero = new ArticulosDP(datos);
 			primero.setNext(actual);
 			return respuesta + datos;
 		}
@@ -82,12 +82,12 @@ public class PersonaAD
 		return vacia;
 	}
 	
-	public String consultarNodo()
+	public String consultarNodos()
 	{
 		String datos = "";
 		
 		if(primero == null)
-			datos = "LISTA_VACÍA";
+			datos = "LISTA_VACIA";
 		else
 		{
 			actual = primero;
@@ -101,19 +101,19 @@ public class PersonaAD
 		return datos;
 	}
 
-	public String consultarId(String id)
+	public String consultarClave(String clave)
 	{
 		String datos = "";
 		boolean encontrado = false;
 		
 		if(primero == null)
-			datos = "LISTA_VACÍA"; 
+			datos = "LISTA_VACIA"; 
 		else
 		{
 			actual = primero;
 			while((actual != null)&&(encontrado == false))
 			{
-				String clave = actual.getId();
+				String id = actual.getClave();
 				if(clave.equals(id))
 				{
 					datos = actual.toString();
@@ -126,52 +126,45 @@ public class PersonaAD
 				}
 			}
 			if(encontrado == false)
-					datos = "NO_ENCONTRADO";
+					datos = "CLAVE_NO_ENCONTRADA";
 		}
 		return datos;
 	}
 	
-	public String consultarNombre(String nombre)
+	public String consultarMarca(String marca)
 	{
 		String datos = "";
 		boolean encontrado = false;
 		
 		if(primero == null)
-			datos = "LISTA_VACÍA";
+			datos = "LISTA_VACIA";
 		else
 		{
 			actual = primero;
-			while((actual != null)&&(encontrado == false))
+			while(actual != null)
 			{
-				String name = actual.getNombre();
-				if(name.equals(nombre))
+				String brand = actual.getMarca();
+				if(brand.equals(marca))
 				{
-					datos = actual.toString();
+					datos = datos + actual.toString() + "\n";
 					encontrado = true;
 				}
-				else
-				{
-					anterior = actual;
-					actual = actual.getNext();
-				}
+				anterior = actual;
+				actual = actual.getNext();
 			}
 			if(encontrado == false)
-					datos = "NO_ENCONTRADO";
+					datos = "MARCA_NO_ENCONTRADA";
 		}
 		return datos;
 	}
 	
-	public String modificarNodo(String datos)
+	public String venderArticulos(int cantidad, int existencia, String clave)
 	{
-		StringTokenizer st = new StringTokenizer(datos, "_");
-		String nombre = "", existencia = "";
+		int nuevaCantidad = existencia - cantidad;
+		String nuevaExistencia = Integer.toString(nuevaCantidad);
 		
-		nombre   = st.nextToken();
-		existencia = st.nextToken();
-		
-		actual.setNombre(nombre);
-		actual.setExistencia(existencia);
-		
+		actual.setExistencia(nuevaExistencia);
+		String datos = actual.toString();
 		return datos;
 	}
 	
@@ -198,7 +191,7 @@ public class PersonaAD
 		String resultado = "";
 		
 		if(primero == null)
-			resultado = "LISTA_VACÍA";
+			resultado = "LISTA_VACIA";
 		else
 		{
 			try

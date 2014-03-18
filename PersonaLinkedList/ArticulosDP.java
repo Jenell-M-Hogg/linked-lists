@@ -1,19 +1,19 @@
 import java.util.*;
 
-public class PersonaDP
+public class ArticulosDP
 {
-	private String id;
+	private String clave;
 	private String nombre;
 	private String existencia;
 	private String marca;
 	private String precio;
 
-	private PersonaDP next;
+	private ArticulosDP next;
 	
 	//Constructors
-	public PersonaDP()
+	public ArticulosDP()
 	{
-		this.id         = "";
+		this.clave      = "";
 		this.nombre     = "";
 		this.existencia = "";
 		this.marca		= "";
@@ -21,11 +21,11 @@ public class PersonaDP
 	}
 	
 	//String Tokenizer
-	public PersonaDP(String datos)
+	public ArticulosDP(String datos)
 	{
 		StringTokenizer st = new StringTokenizer(datos, "_");
 		
-			this.id 		= st.nextToken();
+			this.clave 		= st.nextToken();
 			this.nombre 	= st.nextToken();
 			this.existencia = st.nextToken();
 			this.marca		= st.nextToken();
@@ -33,9 +33,9 @@ public class PersonaDP
 	}
 	
 	//Accessors (Getters)
-	public String getId()
+	public String getClave()
 	{
-		return this.id;
+		return this.clave;
 	}
 
 	public String getNombre()
@@ -59,15 +59,15 @@ public class PersonaDP
 	}
 	
 		
-	public PersonaDP getNext()
+	public ArticulosDP getNext()
 	{
 		return this.next;
 	}
 	
 	//Mutators(Setters)
-	public void setId(String id)
+	public void setClave(String clave)
 	{
-		this.id = id;
+		this.clave = clave;
 	}
 
 	public void setNombre(String nombre)
@@ -90,7 +90,7 @@ public class PersonaDP
 		this.precio = precio;
 	}
 	
-	public void setNext(PersonaDP dir)
+	public void setNext(ArticulosDP dir)
 	{
 		this.next = dir;
 	}
@@ -98,6 +98,6 @@ public class PersonaDP
 	//Final String
 	public String toString()
 	{
-		return this.id+"_"+this.nombre+"_"+this.existencia+"_"+this.marca+"_"+this.precio;
+		return this.clave+"_"+this.nombre+"_"+this.marca+"_"+this.existencia+"_"+this.precio;
 	}
 }
