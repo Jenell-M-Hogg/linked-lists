@@ -20,7 +20,8 @@ public class ArticulosIUG extends Frame implements ActionListener
 {
 	private JTextField tfClave,tfNombre, tfExistencia, tfMarca, tfPrecio;
 	private JButton    bCapturar, bConsultar, bConsultarMarca, bConsultarClave,
-					   bVender, bRealizarVenta, bCancelar, bBorrar, bCapturarInicio, bSalir;
+					   bVender, bRealizarVenta, bCancelar, bBorrar, bCapturarInicio, bSalir,
+					   bConsultarVentas;
 	private JTextArea  taDatos;
 	private JPanel 	   p1, p2;
 	
@@ -50,7 +51,7 @@ public class ArticulosIUG extends Frame implements ActionListener
 		resultado 		= "";
 		
 		//Agregar los atributos a los paneles
-		p1.setLayout(new GridLayout(10,2));
+		p1.setLayout(new GridLayout(11, 2));
 		
 		p1.add(new Label("Clave"));
 		p1.add(tfClave);
@@ -102,6 +103,10 @@ public class ArticulosIUG extends Frame implements ActionListener
 		bCancelar = new JButton("Cancelar Modificación");
 		bCancelar.addActionListener(this);
 		p1.add(bCancelar);
+		
+		bConsultarVentas = new JButton("Consultar Ventas");
+		bConsultarVentas.addActionListener(this);
+		p1.add(bConsultarVentas);
 		
 		bSalir = new JButton("Salir");
 		bSalir.addActionListener(this);
@@ -474,6 +479,7 @@ public class ArticulosIUG extends Frame implements ActionListener
 		if(e.getSource() == bCancelar)
 		{
 			habilitarBotones(true);
+			habilitarCampos(true);
 			clrFields();
 		}
 		
@@ -503,6 +509,12 @@ public class ArticulosIUG extends Frame implements ActionListener
 			String resultado = lista.datosListaArchivo();
 			System.out.println(resultado);
 			System.exit(0);
+		}
+		
+		if(e.getSource() == bConsultarVentas)
+		{
+			resultado = lista.consultarNodosVentas();
+			print(resultado);
 		}
 	}
 	

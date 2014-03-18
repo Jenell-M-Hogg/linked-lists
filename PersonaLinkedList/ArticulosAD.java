@@ -4,7 +4,7 @@ import java.io.*;
 
 public class ArticulosAD
 {
-	private ArticulosDP primero, ultimo, actual, anterior;
+	private ArticulosDP primero, ultimo, actual, anterior, primerVenta, actualVenta, ultimaVenta;
 	private PrintWriter archivoSalida;
 	private BufferedReader archivoEntrada;
 	
@@ -100,6 +100,25 @@ public class ArticulosAD
 		}
 		return datos;
 	}
+	
+	public String consultarNodosVentas()
+	{
+		String datos = "";
+		
+		if(primerVenta == null)
+			datos = "LISTA_VACIA";
+		else
+		{
+			actualVenta = primerVenta;
+			
+			while(actualVenta != null)
+			{
+				datos = datos + actualVenta.toString() + "\n";
+				actualVenta = actualVenta.getNext();
+			}
+		}
+		return datos;
+	}
 
 	public String consultarClave(String clave)
 	{
@@ -131,6 +150,28 @@ public class ArticulosAD
 		return datos;
 	}
 	
+	public String consultarVentas(String clave)
+	{
+		String datos = "";
+		boolean encontrado = false;
+		
+		actualVenta = primerVenta;
+		while((actualVenta != null)&&(encontrado == false))
+		{
+			String id = actualVenta.getClave();
+			if(clave.equals(id))
+			{
+				datos = actualVenta.toString();
+				encontrado = true;
+			}
+			else
+				actualVenta = actualVenta.getNext();
+		}
+			if(encontrado == false)
+					datos = "CLAVE_NO_ENCONTRADA";
+		return datos;
+	}
+	
 	public String consultarMarca(String marca)
 	{
 		String datos = "";
@@ -158,13 +199,63 @@ public class ArticulosAD
 		return datos;
 	}
 	
+	public void crearNodoVentas(String datos, int venta)
+	{
+		String clave, nombre, marca, precio, datosVenta, resultado, strExistencia, strNuevaVenta;
+		StringTokenizer st = new StringTokenizer(datos, "_");
+		int existencia, nuevaVenta;
+		clave = st.nextToken();
+		nombre = st.nextToken();
+		marca = st.nextToken();
+		st.nextToken(); //Existencia
+		precio = st.nextToken();
+		
+	    datosVenta = clave+"_"+nombre+"_"+marca+"_"+venta+"_"+precio;
+	    
+	    if(primerVenta == null)
+		{
+			primerVenta = new ArticulosDP(datosVenta);
+			ultimaVenta = primerVenta;
+			ultimaVenta.setNext(null);
+		}
+		else
+		{
+			//Se comprobará que no exista una venta de ese artículo
+			resultado = consultarVentas(clave);
+			
+			if(resultado.equals("CLAVE_NO_ENCONTRADA"))
+			{
+				actualVenta = new ArticulosDP(datosVenta);
+				ultimaVenta.setNext(actualVenta); //Link
+				ultimaVenta = actualVenta;
+				ultimaVenta.setNext(null);
+			}
+			else //En caso de que el nodo SÍ exista, se actualizará la información de la venta.
+			{
+				strExistencia = actualVenta.getExistencia();
+				existencia = Integer.parseInt(strExistencia);
+				nuevaVenta = existencia + venta;
+				strNuevaVenta = Integer.toString(nuevaVenta);
+				
+				actualVenta.setExistencia(strNuevaVenta);
+			}
+		}
+	}
+	
 	public String venderArticulos(int cantidad, int existencia, String clave)
 	{
-		int nuevaCantidad = existencia - cantidad;
-		String nuevaExistencia = Integer.toString(nuevaCantidad);
+		int nuevaCantidad = 0;
+		String nuevaExistencia = "", datos = "", datosVenta = "";
+		StringTokenizer st;
+	
+		nuevaCantidad = existencia - cantidad;
+		nuevaExistencia = Integer.toString(nuevaCantidad);
 		
 		actual.setExistencia(nuevaExistencia);
-		String datos = actual.toString();
+		datos = actual.toString();
+		
+		crearNodoVentas(datos, cantidad);
+		
 		return datos;
 	}
 	

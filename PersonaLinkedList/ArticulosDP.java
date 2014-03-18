@@ -15,8 +15,8 @@ public class ArticulosDP
 	{
 		this.clave      = "";
 		this.nombre     = "";
-		this.existencia = "";
 		this.marca		= "";
+		this.existencia = "";
 		this.precio		= "";
 	}
 	
@@ -27,8 +27,8 @@ public class ArticulosDP
 		
 			this.clave 		= st.nextToken();
 			this.nombre 	= st.nextToken();
-			this.existencia = st.nextToken();
 			this.marca		= st.nextToken();
+			this.existencia = st.nextToken();
 			this.precio 	= st.nextToken();
 	}
 	
