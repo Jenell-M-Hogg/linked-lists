@@ -4,7 +4,7 @@ import java.io.*;
 
 public class ArticulosAD
 {
-	private ArticulosDP primero, ultimo, actual, anterior, primerVenta, actualVenta, ultimaVenta;
+	private ArticulosDP primero, ultimo, actual, anterior, primerVenta, actualVenta, ultimaVenta, primeroArchivo, actualArchivo, ultimoArchivo, primeroArchivoVentas, actualArchivoVentas, ultimoArchivoVentas;
 	private PrintWriter archivoSalida;
 	private BufferedReader archivoEntrada;
 	
@@ -13,6 +13,7 @@ public class ArticulosAD
 		String datos = "";
 		try
 		{
+			/******** Archivo de Artículos ***********/
 			//1) Abrir Archivo
 			archivoEntrada = new BufferedReader(new FileReader("Articulos.txt"));
 			
@@ -21,6 +22,22 @@ public class ArticulosAD
 			{
 				datos = archivoEntrada.readLine();
 				crearNodo(datos);
+				crearNodoArchivo(datos);
+			}
+			
+			//3) Cerrar Archivo
+			archivoEntrada.close();
+			
+			/******** Archivo de Ventas ***********/
+			//1) Abrir Archivo
+			archivoEntrada = new BufferedReader(new FileReader("Ventas.txt"));
+			
+			//2) Procesar datos del archivo
+			while(archivoEntrada.ready())
+			{
+				datos = archivoEntrada.readLine();
+				crearNodoVentas(datos);
+				crearNodoArchivoVentas(datos);
 			}
 			
 			//3) Cerrar Archivo
@@ -30,9 +47,8 @@ public class ArticulosAD
 		{
 			System.out.println("Error: " + ioe);
 		}
-		
 	}
-	
+
 	public String crearNodo(String datos)
 	{
 		String respuesta = "Nuevo nodo creado: ";
@@ -49,6 +65,66 @@ public class ArticulosAD
 			ultimo.setNext(actual); //Link
 			ultimo = actual;
 			ultimo.setNext(null);
+			return respuesta + datos;
+		}
+	}
+	
+	public String crearNodoArchivo(String datos)
+	{
+		String respuesta = "Nuevo nodo creado: ";
+		if(primeroArchivo == null)
+		{
+			primeroArchivo = new ArticulosDP(datos);
+			ultimoArchivo = primeroArchivo;
+			ultimoArchivo.setNext(null);
+			return respuesta + datos;
+		}
+		else
+		{
+			actualArchivo = new ArticulosDP(datos);
+			ultimoArchivo.setNext(actualArchivo); //Link
+			ultimoArchivo = actualArchivo;
+			ultimoArchivo.setNext(null);
+			return respuesta + datos;
+		}
+	}
+	
+	public String crearNodoVentas(String datos)
+	{
+		String respuesta = "Nuevo nodo creado: ";
+		if(primerVenta == null)
+		{
+			primerVenta = new ArticulosDP(datos);
+			ultimaVenta = primerVenta;
+			ultimaVenta.setNext(null);
+			return respuesta + datos;
+		}
+		else
+		{
+			actualVenta = new ArticulosDP(datos);
+			ultimaVenta.setNext(actualVenta); //Link
+			ultimaVenta = actualVenta;
+			ultimaVenta.setNext(null);
+			return respuesta + datos;
+		}
+	}
+	
+	public String crearNodoArchivoVentas(String datos)
+	{
+		String respuesta = "Nuevo nodo creado: ";
+		if(primeroArchivoVentas == null)
+		{
+			primeroArchivoVentas = new ArticulosDP(datos);
+			ultimoArchivoVentas = primeroArchivoVentas;
+			ultimoArchivoVentas.setNext(null);
+			return respuesta + datos;
+		}
+		else
+		{
+			actualArchivoVentas = new ArticulosDP(datos);
+			ultimoArchivoVentas.setNext(actualArchivoVentas); //Link
+			ultimoArchivoVentas = actualArchivoVentas;
+			ultimoArchivoVentas.setNext(null);
 			return respuesta + datos;
 		}
 	}
@@ -82,7 +158,25 @@ public class ArticulosAD
 		return vacia;
 	}
 	
-	public String consultarNodos()
+	public String consultarNodos(String str)
+	{
+		String resultado = "";
+		if(str.equals("VENTAS"))
+			resultado = consultarNodosAD(primerVenta, actualVenta);
+			
+		if(str.equals("ARTICULOS"))
+			resultado = consultarNodosAD(primero, actual);
+			
+		if(str.equals("ARTICULOS_ARCHIVO"))
+			resultado = consultarNodosAD(primeroArchivo, actualArchivo);
+			
+		if(str.equals("VENTAS_ARCHIVO"))
+			resultado = consultarNodosAD(primeroArchivoVentas, actualArchivoVentas);
+			
+		return resultado;
+	}
+	
+	private String consultarNodosAD(ArticulosDP primero, ArticulosDP actual)
 	{
 		String datos = "";
 		
@@ -96,25 +190,6 @@ public class ArticulosAD
 			{
 				datos = datos + actual.toString() + "\n";
 				actual = actual.getNext();
-			}
-		}
-		return datos;
-	}
-	
-	public String consultarNodosVentas()
-	{
-		String datos = "";
-		
-		if(primerVenta == null)
-			datos = "LISTA_VACIA";
-		else
-		{
-			actualVenta = primerVenta;
-			
-			while(actualVenta != null)
-			{
-				datos = datos + actualVenta.toString() + "\n";
-				actualVenta = actualVenta.getNext();
 			}
 		}
 		return datos;
@@ -199,11 +274,10 @@ public class ArticulosAD
 		return datos;
 	}
 	
-	public void crearNodoVentas(String datos, int venta)
+	public void crearNuevoNodoVentas(String datos, int venta)
 	{
-		String clave, nombre, marca, precio, datosVenta, resultado, strExistencia, strNuevaVenta;
+		String clave, nombre, marca, precio, datosVenta;
 		StringTokenizer st = new StringTokenizer(datos, "_");
-		int existencia, nuevaVenta;
 		clave = st.nextToken();
 		nombre = st.nextToken();
 		marca = st.nextToken();
@@ -212,7 +286,9 @@ public class ArticulosAD
 		
 	    datosVenta = clave+"_"+nombre+"_"+marca+"_"+venta+"_"+precio;
 	    
-	    if(primerVenta == null)
+	    String resultado, strExistencia, strNuevaVenta;
+		int existencia, nuevaVenta;
+		if(primerVenta == null)
 		{
 			primerVenta = new ArticulosDP(datosVenta);
 			ultimaVenta = primerVenta;
@@ -254,7 +330,7 @@ public class ArticulosAD
 		actual.setExistencia(nuevaExistencia);
 		datos = actual.toString();
 		
-		crearNodoVentas(datos, cantidad);
+		crearNuevoNodoVentas(datos, cantidad);
 		
 		return datos;
 	}
@@ -277,7 +353,19 @@ public class ArticulosAD
 		return "Nodo Borrado Exitósamente.";
 	}
 	
-	public String datosListaArchivo()
+	public String datosListaArchivo(String str)
+	{
+		String respuesta = "";
+		if(str.equals("ARTICULOS"))
+			respuesta = datosListaArchivoAD("Articulos.txt", primero, actual);
+			
+		if(str.equals("VENTAS"))
+			respuesta = datosListaArchivoAD("Ventas.txt", primerVenta, actualVenta);
+			
+		return respuesta;
+	}
+	
+	public String datosListaArchivoAD(String str, ArticulosDP primero, ArticulosDP actual)
 	{
 		String resultado = "";
 		
@@ -288,7 +376,7 @@ public class ArticulosAD
 			try
 			{
 				//1) Abrir archivo
-				archivoSalida = new PrintWriter(new FileWriter("Articulos.txt"));
+				archivoSalida = new PrintWriter(new FileWriter(str));
 				
 				//2) Procesar datos 
 				actual = primero;
@@ -309,4 +397,5 @@ public class ArticulosAD
 		}
 		return resultado;
 	}
+	
 }

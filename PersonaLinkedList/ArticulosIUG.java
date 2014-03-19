@@ -20,8 +20,8 @@ public class ArticulosIUG extends Frame implements ActionListener
 {
 	private JTextField tfClave,tfNombre, tfExistencia, tfMarca, tfPrecio;
 	private JButton    bCapturar, bConsultar, bConsultarMarca, bConsultarClave,
-					   bVender, bRealizarVenta, bCancelar, bBorrar, bCapturarInicio, bSalir,
-					   bConsultarVentas;
+					   bVender, bRealizarVenta, bCancelar, bBorrar, bCapturarInicio,
+					   bConsultarVentas, bConsultarArchivo, bConsultarArchivoVentas, bSalir;
 	private JTextArea  taDatos;
 	private JPanel 	   p1, p2;
 	
@@ -51,7 +51,7 @@ public class ArticulosIUG extends Frame implements ActionListener
 		resultado 		= "";
 		
 		//Agregar los atributos a los paneles
-		p1.setLayout(new GridLayout(11, 2));
+		p1.setLayout(new GridLayout(12, 2));
 		
 		p1.add(new Label("Clave"));
 		p1.add(tfClave);
@@ -96,6 +96,18 @@ public class ArticulosIUG extends Frame implements ActionListener
 		bCapturarInicio.addActionListener(this);
 		p1.add(bCapturarInicio);
 		
+		bConsultarVentas = new JButton("Consultar Ventas");
+		bConsultarVentas.addActionListener(this);
+		p1.add(bConsultarVentas);
+		
+		bConsultarArchivo = new JButton("Consultar Archivo de Artículos");
+		bConsultarArchivo.addActionListener(this);
+		p1.add(bConsultarArchivo);
+				
+		bConsultarArchivoVentas = new JButton("Consultar Archivo de Ventas");
+		bConsultarArchivoVentas.addActionListener(this);
+		p1.add(bConsultarArchivoVentas);
+		
 		bRealizarVenta = new JButton("Realizar Venta");
 		bRealizarVenta.addActionListener(this);
 		p1.add(bRealizarVenta);
@@ -103,10 +115,6 @@ public class ArticulosIUG extends Frame implements ActionListener
 		bCancelar = new JButton("Cancelar Modificación");
 		bCancelar.addActionListener(this);
 		p1.add(bCancelar);
-		
-		bConsultarVentas = new JButton("Consultar Ventas");
-		bConsultarVentas.addActionListener(this);
-		p1.add(bConsultarVentas);
 		
 		bSalir = new JButton("Salir");
 		bSalir.addActionListener(this);
@@ -118,7 +126,7 @@ public class ArticulosIUG extends Frame implements ActionListener
 		p2.add(new JScrollPane(taDatos));
 		
 		add(p2);
-		setSize(500,550);
+		setSize(500,600);
 		setVisible(true);
 		
 		//Deshabilitar botones pertenecientes a "Modificar Datos"
@@ -198,6 +206,9 @@ public class ArticulosIUG extends Frame implements ActionListener
 		bVender.setEnabled(value);
 		bBorrar.setEnabled(value);
 		bCapturarInicio.setEnabled(value);
+		bConsultarVentas.setEnabled(value);
+		bConsultarArchivo.setEnabled(value);
+		bConsultarArchivoVentas.setEnabled(value);
 		
 		bRealizarVenta.setEnabled(!value);
 		bCancelar.setEnabled(!value);
@@ -374,7 +385,7 @@ public class ArticulosIUG extends Frame implements ActionListener
 		
 		if (e.getSource() == bConsultar)
 		{	
-			resultado = lista.consultarNodos();
+			resultado = lista.consultarNodos("ARTICULOS");
 			print(resultado);
 		}
 
@@ -506,14 +517,30 @@ public class ArticulosIUG extends Frame implements ActionListener
 				
 		if (e.getSource() == bSalir)
 		{
-			String resultado = lista.datosListaArchivo();
+			String resultado = lista.datosListaArchivo("ARTICULOS");
+			System.out.println(resultado);
+			
+			resultado = lista.datosListaArchivo("VENTAS");
 			System.out.println(resultado);
 			System.exit(0);
 		}
 		
 		if(e.getSource() == bConsultarVentas)
 		{
-			resultado = lista.consultarNodosVentas();
+			resultado = lista.consultarNodos("VENTAS");
+			print(resultado);
+		}
+		
+		if(e.getSource() == bConsultarArchivo)
+		{
+			resultado = lista.consultarNodos("ARTICULOS_ARCHIVO");
+			print(resultado);
+		}
+		
+				
+		if(e.getSource() == bConsultarArchivoVentas)
+		{
+			resultado = lista.consultarNodos("VENTAS_ARCHIVO");
 			print(resultado);
 		}
 	}
