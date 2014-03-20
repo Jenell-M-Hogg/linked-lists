@@ -159,6 +159,8 @@ public class ArticulosIUG extends Frame implements ActionListener
 		
 		bRealizarTransaccion.setEnabled(!value);
 		bCancelar.setEnabled(!value);
+		
+		tfClave.setEnabled(true);
 	}
 	
 	public void habilitarCampos (boolean value)
@@ -299,11 +301,12 @@ public class ArticulosIUG extends Frame implements ActionListener
 	private void borrarNodo()
 	{			
 		/*Llamar al método que borra a los nodos*/
-		resultado = lista.borrarNodo();
+		resultado = lista.borrarNodo(clave);
 		print(resultado);
 		
-		/*Regresar los botones a su estado original*/
+		/*Regresar los botones y los campos a su estado original*/
 		 habilitarBotones(true);
+		 habilitarCampos(true);
 				
 		/*Quitar la información de los TextFields*/
 		clrFields();
@@ -311,21 +314,23 @@ public class ArticulosIUG extends Frame implements ActionListener
 	
 	private void modificarNodo()
 	{
+		//1) Obtener datos de los TextFields
 		datos = obtenerDatos();
 			
 		//Comprobar que ninguno de los campos esté vacío, y en caso de que lo anterior no se cumpla, evitar enviar los datos en ese estado a los nodos
-		if(datos.equals("CAMPO_VACIO"))
-			print("CAMPO_VACIO");
+		if(datos.equals("CAMPO_VACIO")||datos.equals("TOKEN")||datos.equals("NO_NUMERICO")||datos.equals("NEGATIVO"))
+			print(datos);
 		else
 		{
 			resultado = lista.modificarNodo(datos);
-			
+				
 			//Mostrarle los cambios al usuario 
 			print("Cambios Realizados: " + resultado);
-				
-			//Devolver los botones a su estado original
+					
+			//Devolver los botones y los campos a su estado original
 			habilitarBotones(true);
-				
+			habilitarCampos(true);
+					
 			//Quitar la información de los TextFields
 			clrFields();
 		}
@@ -561,7 +566,9 @@ public class ArticulosIUG extends Frame implements ActionListener
 			{
 				mostrar(resultado);
 				habilitarBotones(false);
+				habilitarCampos(false);
 				controlador = "BORRAR";
+					print("IMPORTANTE: Toma en cuenta que el Dar de Baja un artículo implica que \ndesaparezca su registro del sistema, es por eso que tanto en la lista de\nartículos, como en la de ventas, no aparecerá más. ");
 			}
 		}
 		
@@ -577,7 +584,9 @@ public class ArticulosIUG extends Frame implements ActionListener
 			{
 				mostrar(resultado);
 				habilitarBotones(false);
+				tfClave.setEnabled(false);//Evitar que el usuario cambie la clave para proteger funcionamiento correcto del sistema
 				controlador = "MODIFICAR";
+				print("NOTA: Recuerda que modificar el PRECIO implica que la utilidad cambie. \nEs por eso que las ventas registradas que se tengan de un producto\nserán reinicidas con la finalidad de no alterar tu percepción acerca de las \nganancias reales.");
 			}
 		}
 	}

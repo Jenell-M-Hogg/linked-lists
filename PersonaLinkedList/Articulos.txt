@@ -1,5 +1,1 @@
-11_Rubber Soul_The Beatles_5_900
-22_Boston_Boston_0_600
-33_Rising Force_Yngwie Malmsteen_45_200
-44_Ah Via Musicom_Eric Johnson_20_300
-55_90125_Yes_57_400
+22_Boston_Boston_20_600

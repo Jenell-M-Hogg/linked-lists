@@ -4,7 +4,7 @@ import java.io.*;
 
 public class ArticulosAD
 {
-	private ArticulosDP primero, ultimo, actual, anterior, primerVenta, actualVenta, ultimaVenta, primeroArchivo, actualArchivo, ultimoArchivo, primeroArchivoVentas, actualArchivoVentas, ultimoArchivoVentas;
+	private ArticulosDP primero, ultimo, actual, anterior, primerVenta, actualVenta, ultimaVenta, primeroArchivo, actualArchivo, ultimoArchivo, primeroArchivoVentas, actualArchivoVentas, ultimoArchivoVentas, anteriorVenta;
 	private PrintWriter archivoSalida;
 	private BufferedReader archivoEntrada;
 	
@@ -221,7 +221,10 @@ public class ArticulosAD
 				encontrado = true;
 			}
 			else
+			{
+				anteriorVenta = actualVenta;
 				actualVenta = actualVenta.getNext();
+			}
 		}
 			if(encontrado == false)
 					datos = "CLAVE_NO_ENCONTRADA";
@@ -360,7 +363,7 @@ public class ArticulosAD
 		return resultado;
 	}
 	
-	public String borrarNodo()
+	public String borrarNodo(String clave)
 	{ 
 		if(actual == primero)
 			primero = actual.getNext(); // Nodo siguiente a "Actual"; Segundo nodo
@@ -375,13 +378,35 @@ public class ArticulosAD
 				anterior.setNext(actual.getNext()); //Unir el nodo anterior con el siguiente del que se borra.
 		}
 		
+		String respuesta = consultarVentas(clave); // Se consulta la clave en la lista de ventas para comprobar que ésta exista y de ser así se actualizen los datos de venta.
+		if(!respuesta.equals("CLAVE_NO_ENCONTRADA"))
+			borrarNodoVentas();
+		
+		return "Nodo Borrado Exitósamente.";
+	}
+	
+	public String borrarNodoVentas()
+	{ 
+		if(actualVenta == primerVenta)
+			primerVenta = actualVenta.getNext(); // Nodo siguiente a "Actual"; Segundo nodo
+		else 
+		{
+			if(actual == ultimo)
+			{
+				ultimaVenta = anteriorVenta; 
+				ultimaVenta.setNext(null); //Apuntar a un "null" en la siguiente dirección del último nodo.
+			}
+			else
+				anteriorVenta.setNext(actualVenta.getNext()); //Unir el nodo anterior con el siguiente del que se borra.
+		}
+		
 		return "Nodo Borrado Exitósamente.";
 	}
 	
 	public String modificarNodo(String datos)
 	{
 		StringTokenizer st = new StringTokenizer(datos, "_");
-		String clave, nombre, marca, existencia, precio;
+		String clave, nombre, marca, existencia, precio, respuesta;
 		
 		clave   = st.nextToken();
 		nombre  = st.nextToken();
@@ -389,11 +414,25 @@ public class ArticulosAD
 		existencia = st.nextToken();
 		precio  = st.nextToken();
 		
-		actual.setClave(clave);
+		//Nodo de Artículos
 		actual.setNombre(nombre);
 		actual.setMarca(marca);
 		actual.setExistencia(existencia);			
 		actual.setPrecio(precio);
+		
+		respuesta = consultarVentas(clave); // Se consulta la clave en la lista de ventas para comprobar que ésta exista y de ser así se actualizen los datos de venta.
+		if(!respuesta.equals("CLAVE_NO_ENCONTRADA"))
+		{
+			if(actualVenta.getPrecio().equals(actual.getPrecio())) // En caso de que el precio no cambie, la utilidad no cambia y por lo tanto únicamente se modifican los datos del nodo de ventas
+			{
+				//Nodo de Ventas
+				actualVenta.setNombre(nombre);
+				actualVenta.setMarca(marca);		
+			}
+			else
+				borrarNodoVentas();
+				
+		}
 
 		return datos;
 	}
