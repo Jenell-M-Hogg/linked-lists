@@ -20,18 +20,19 @@ public class ArticulosIUG extends Frame implements ActionListener
 {
 	private JTextField tfClave,tfNombre, tfExistencia, tfMarca, tfPrecio;
 	private JButton    bCapturar, bConsultar, bConsultarMarca, bConsultarClave,
-					   bVender, bRealizarVenta, bCancelar, bBorrar, bCapturarInicio,
-					   bConsultarVentas, bConsultarArchivo, bConsultarArchivoVentas, bSalir;
+					   bVender, bRealizarTransaccion, bCancelar, bBorrar,
+					   bConsultarVentas, bConsultarArchivo, bConsultarArchivoVentas, bSalir,
+					   bModificar;
 	private JTextArea  taDatos;
 	private JPanel 	   p1, p2;
 	
-	private String clave, datos, nombre, existencia, precio, marca, resultado;
+	private String clave, datos, nombre, existencia, precio, marca, resultado, controlador;
 	
 	private ArticulosAD lista = new ArticulosAD(); 
 	
 	public ArticulosIUG()
 	{
-		super("Proyecto  (Linked List)");
+		super("Proyecto (Linked List)");
 		
 		//Inicializar los atributos
 		tfClave 	   	= new JTextField();
@@ -88,13 +89,13 @@ public class ArticulosIUG extends Frame implements ActionListener
 		bVender.addActionListener(this);
 		p1.add(bVender);
 		
-		bBorrar = new JButton("Borrar Nodo");
+		bModificar = new JButton("Modificar Artículos");
+		bModificar.addActionListener(this);
+		p1.add(bModificar);
+		
+		bBorrar = new JButton("Dar de Baja Artículo");
 		bBorrar.addActionListener(this);
 		p1.add(bBorrar);
-		
-		bCapturarInicio = new JButton("Crear Nuevo Nodo al Inicio");
-		bCapturarInicio.addActionListener(this);
-		p1.add(bCapturarInicio);
 		
 		bConsultarVentas = new JButton("Consultar Ventas");
 		bConsultarVentas.addActionListener(this);
@@ -108,11 +109,11 @@ public class ArticulosIUG extends Frame implements ActionListener
 		bConsultarArchivoVentas.addActionListener(this);
 		p1.add(bConsultarArchivoVentas);
 		
-		bRealizarVenta = new JButton("Realizar Venta");
-		bRealizarVenta.addActionListener(this);
-		p1.add(bRealizarVenta);
+		bRealizarTransaccion = new JButton("Realizar Transacción");
+		bRealizarTransaccion.addActionListener(this);
+		p1.add(bRealizarTransaccion);
 		
-		bCancelar = new JButton("Cancelar Modificación");
+		bCancelar = new JButton("Cancelar Transacción");
 		bCancelar.addActionListener(this);
 		p1.add(bCancelar);
 		
@@ -130,7 +131,7 @@ public class ArticulosIUG extends Frame implements ActionListener
 		setVisible(true);
 		
 		//Deshabilitar botones pertenecientes a "Modificar Datos"
-		bRealizarVenta.setEnabled(false);
+		bRealizarTransaccion.setEnabled(false);
 		bCancelar.setEnabled(false);
 	}
 	
@@ -143,6 +144,70 @@ public class ArticulosIUG extends Frame implements ActionListener
 		tfPrecio.setText("");
 	}
 	
+	public void habilitarBotones(boolean value)
+	{
+		bCapturar.setEnabled(value); 
+		bConsultar.setEnabled(value);
+		bConsultarClave.setEnabled(value);
+		bConsultarMarca.setEnabled(value);
+		bVender.setEnabled(value);
+		bModificar.setEnabled(value);
+		bBorrar.setEnabled(value);
+		bConsultarVentas.setEnabled(value);
+		bConsultarArchivo.setEnabled(value);
+		bConsultarArchivoVentas.setEnabled(value);
+		
+		bRealizarTransaccion.setEnabled(!value);
+		bCancelar.setEnabled(!value);
+	}
+	
+	public void habilitarCampos (boolean value)
+	{
+		tfClave.setEnabled(value);
+		tfMarca.setEnabled(value);
+		tfNombre.setEnabled(value);
+		tfExistencia.setEnabled(value);
+		tfPrecio.setEnabled(value);
+	}
+	
+	private void mostrar(String str)
+	{
+		StringTokenizer st = new StringTokenizer(str, "_");
+					
+		clave = st.nextToken();
+		nombre = st.nextToken();
+		marca = st.nextToken();
+		existencia = st.nextToken();
+		precio = st.nextToken();
+				
+		tfClave.setText(clave);
+		tfNombre.setText(nombre);
+		tfMarca.setText(marca);
+		tfExistencia.setText(existencia);
+		tfPrecio.setText(precio);
+	}
+		
+	public boolean notTokenizer(String str)
+	{
+		Character array[] = new Character[str.length()];
+		int i = 0;
+		boolean token = false;
+		
+		//1) Transformar el String en un arreglo de caracteres
+	    for(i = 0; i < str.length(); i++) 
+      		array[i] = new Character(str.charAt(i));
+      		
+      	//2) Verificar que no existan tokens en el string, en este caso '_' que puedan llegar a comprometer el correcto funcionamiento del sistema
+      	i = 0; // Reinicializar contador
+      	while((i < str.length())&&(token == false))
+      	{
+      		if(array[i] == '_')
+      			token = true;
+      		i++;
+      	}
+      	
+      	return token;
+	}
 	
 	private String obtenerDatos()
 	{
@@ -193,74 +258,77 @@ public class ArticulosIUG extends Frame implements ActionListener
         		datos = "NO_NUMERICO";
         	}
         }
-        
+    
         return datos;
 	}
 	
-	public void habilitarBotones(boolean value)
+	private void realizarVenta()
 	{
-		bCapturar.setEnabled(value); 
-		bConsultar.setEnabled(value);
-		bConsultarClave.setEnabled(value);
-		bConsultarMarca.setEnabled(value);
-		bVender.setEnabled(value);
-		bBorrar.setEnabled(value);
-		bCapturarInicio.setEnabled(value);
-		bConsultarVentas.setEnabled(value);
-		bConsultarArchivo.setEnabled(value);
-		bConsultarArchivoVentas.setEnabled(value);
-		
-		bRealizarVenta.setEnabled(!value);
-		bCancelar.setEnabled(!value);
+		boolean cantidadCorrecta = false;
+		String str = "", strError = "Debes introducir una cantidad válida. Recuerda : \n 1) Sólo debes introducir números enteros; positivos \n 2) Debes dejar a lo más cero artículos en 'stock'" ;
+		String strExistencia = tfExistencia.getText(), clave = "";
+		int cantidad = 0;
+		int existencia = Integer.parseInt(strExistencia);
+			
+		while(cantidadCorrecta == false)
+		{
+			str = JOptionPane.showInputDialog(null, "Cantidad a Vender = ");
+			try
+			{
+				cantidad = Integer.parseInt(str);
+				if((cantidad < 0)||(cantidad > existencia))
+					JOptionPane.showMessageDialog(null, strError);
+					else
+					{
+						cantidadCorrecta = true;
+						clave = tfClave.getText();
+						resultado = lista.venderArticulos(cantidad, existencia);
+						habilitarCampos(true);
+						habilitarBotones(true);
+						print(resultado);
+					}
+			}
+			catch(NumberFormatException nfe)
+			{
+				System.out.println("Error: " + nfe);
+				JOptionPane.showMessageDialog(null, strError);
+			}
+		}
 	}
 	
-	public void habilitarCampos (boolean value)
-	{
-		tfClave.setEnabled(value);
-		tfMarca.setEnabled(value);
-		tfNombre.setEnabled(value);
-		tfExistencia.setEnabled(value);
-		tfPrecio.setEnabled(value);
-	}
-	
+	private void borrarNodo()
+	{			
+		/*Llamar al método que borra a los nodos*/
+		resultado = lista.borrarNodo();
+		print(resultado);
 		
-	private void mostrar(String str)
-	{
-		StringTokenizer st = new StringTokenizer(str, "_");
-					
-		clave = st.nextToken();
-		nombre = st.nextToken();
-		marca = st.nextToken();
-		existencia = st.nextToken();
-		precio = st.nextToken();
+		/*Regresar los botones a su estado original*/
+		 habilitarBotones(true);
 				
-		tfClave.setText(clave);
-		tfNombre.setText(nombre);
-		tfMarca.setText(marca);
-		tfExistencia.setText(existencia);
-		tfPrecio.setText(precio);
+		/*Quitar la información de los TextFields*/
+		clrFields();
 	}
 	
-	public boolean notTokenizer(String str)
+	private void modificarNodo()
 	{
-		Character array[] = new Character[str.length()];
-		int i = 0;
-		boolean token = false;
-		
-		//1) Transformar el String en un arreglo de caracteres
-	    for(i = 0; i < str.length(); i++) 
-      		array[i] = new Character(str.charAt(i));
-      		
-      	//2) Verificar que no existan tokens en el string, en este caso '_' que puedan llegar a comprometer el correcto funcionamiento del sistema
-      	i = 0; // Reinicializar contador
-      	while((i < str.length())&&(token == false))
-      	{
-      		if(array[i] == '_')
-      			token = true;
-      		i++;
-      	}
-      	
-      	return token;
+		datos = obtenerDatos();
+			
+		//Comprobar que ninguno de los campos esté vacío, y en caso de que lo anterior no se cumpla, evitar enviar los datos en ese estado a los nodos
+		if(datos.equals("CAMPO_VACIO"))
+			print("CAMPO_VACIO");
+		else
+		{
+			resultado = lista.modificarNodo(datos);
+			
+			//Mostrarle los cambios al usuario 
+			print("Cambios Realizados: " + resultado);
+				
+			//Devolver los botones a su estado original
+			habilitarBotones(true);
+				
+			//Quitar la información de los TextFields
+			clrFields();
+		}
 	}
 
 	// Se busca si existe y manda el resultado (Nombre o Clave)	
@@ -279,7 +347,6 @@ public class ArticulosIUG extends Frame implements ActionListener
 				
 			if((!marca.equals(""))&&(vacia == false))
 				resultado = lista.consultarMarca(marca);
-
 		}
 					
 		if(elemento.equals("CLAVE"))
@@ -359,7 +426,7 @@ public class ArticulosIUG extends Frame implements ActionListener
 			//1) Obtener datos de los TextFields
             datos = obtenerDatos();
             
-            //2) Comprobar que ninguno de los campos esté vacío, y en caso de que lo anterior no se cumpla, evitar enviar los datos en ese estado a los nodos
+            //2) Comprobar que ninguno de los campos cumplan con los diversos requisitos, y en caso de que estos no se respeten, evitar enviar los datos en ese estado a los nodos
 			if(datos.equals("CAMPO_VACIO")||datos.equals("TOKEN")||datos.equals("NO_NUMERICO")||datos.equals("NEGATIVO"))
 				print(datos);
 			else
@@ -409,7 +476,6 @@ public class ArticulosIUG extends Frame implements ActionListener
 		
 		if(e.getSource() == bVender)
 		{
-			StringTokenizer st;
 			//1) Hacer una consulta de los datos para comprobar que exista la "Clave" o "Registro"
 			resultado = consultar("CLAVE");
 
@@ -428,63 +494,23 @@ public class ArticulosIUG extends Frame implements ActionListener
 					habilitarCampos(false);
 					datos = obtenerDatos();
 					print(datos);
+					controlador = "VENTA";
 				}
 				else
 					print("NO_VENTA");
 			}
 		}
 		
-		if(e.getSource() == bBorrar)
+		if(e.getSource() == bRealizarTransaccion)
 		{
-			//1) Hacer una consulta de los datos para comprobar que exista el "Nombre" o "Registro"
-			resultado = consultar("NOMBRE");
-
-			//2) Hacer las validaciones correspondientes
-			if((resultado.equals("LISTA_VACIA"))||(resultado.equals("NO_ENCONTRADO"))||(resultado.equals("NOMBRE_VACIO")))
-				print(resultado);
-			else
-			{
-				//3) Llamar al mï¿½todo que borra a los nodos
-				resultado = lista.borrarNodo();
-				print(resultado);
+			if(controlador.equals("VENTA"))
+				realizarVenta();
 				
-				//Quitar la informaciï¿½n de los TextFields
-			    clrFields();
-			}
-		}
-		
-		if(e.getSource() == bRealizarVenta)
-		{
-			boolean cantidadCorrecta = false;
-			String str = "", strError = "Debes introducir una cantidad válida. Recuerda : \n 1) Sólo debes introducir números enteros; positivos \n 2) Debes dejar a lo más cero artículos en 'stock'" ;
-			String strExistencia = tfExistencia.getText(), clave = "";
-			int cantidad = 0;
-			int existencia = Integer.parseInt(strExistencia);
-			
-			while(cantidadCorrecta == false)
-			{
-				str = JOptionPane.showInputDialog(null, "Cantidad a Vender = ");
-				try
-				{
-					cantidad = Integer.parseInt(str);
-					if((cantidad < 0)||(cantidad > existencia))
-						JOptionPane.showMessageDialog(null, strError);
-						else
-						{
-							cantidadCorrecta = true;
-							clave = tfClave.getText();
-							resultado = lista.venderArticulos(cantidad, existencia, clave);
-							habilitarCampos(true);
-							habilitarBotones(true);
-							print(resultado);
-						}
-					}
-					catch(NumberFormatException nfe)
-					{
-						System.out.println("Error: " + nfe);
-						JOptionPane.showMessageDialog(null, strError);
-					}
-				}
+			if(controlador.equals("BORRAR"))
+				borrarNodo();
+				
+			if(controlador.equals("MODIFICAR"))
+				modificarNodo();	
 		}
 		
 		if(e.getSource() == bCancelar)
@@ -492,27 +518,6 @@ public class ArticulosIUG extends Frame implements ActionListener
 			habilitarBotones(true);
 			habilitarCampos(true);
 			clrFields();
-		}
-		
-		if (e.getSource() == bCapturarInicio)
-		{
-			//1) Obtener datos de los TextFields
-            datos = obtenerDatos();
-            
-            //2) Comprobar que ninguno de los campos estï¿½ vacï¿½o, y en caso de que lo anterior no se cumpla, evitar enviar los datos en ese estado a los nodos
-			if(datos.equals("CAMPO_VACIO"))
-				print("CAMPO_VACIO");
-			else
-			{
-				//3) Enviar los datos a la clase AD a travï¿½s del metodo crearNodo
-		        resultado = lista.crearNodoInicio(datos);
-		
-		        //4) Desplegar el resultado de la operaciï¿½n
-		        print(resultado);
-		        
-		        //5) Quitar la informaciï¿½n de los TextFields
-		        clrFields();
-			}
 		}
 				
 		if (e.getSource() == bSalir)
@@ -542,6 +547,38 @@ public class ArticulosIUG extends Frame implements ActionListener
 		{
 			resultado = lista.consultarNodos("VENTAS_ARCHIVO");
 			print(resultado);
+		}
+		
+		if(e.getSource() == bBorrar)
+		{
+			//1) Hacer una consulta de los datos para comprobar que exista la "Clave" o "Registro"
+			resultado = consultar("CLAVE");
+			
+			//2) Comprobar que ninguno de los campos cumplan con los diversos requisitos, y en caso de que estos no se respeten, evitar enviar los datos en ese estado a los nodos
+			if(resultado.equals("CLAVE_VACIA")||(resultado.equals("LISTA_VACIA"))||(resultado.equals("CLAVE_NO_ENCONTRADA")))
+				print(resultado);
+			else
+			{
+				mostrar(resultado);
+				habilitarBotones(false);
+				controlador = "BORRAR";
+			}
+		}
+		
+		if(e.getSource() == bModificar)
+		{
+			//1) Hacer una consulta de los datos para comprobar que exista la "Clave" o "Registro"
+			resultado = consultar("CLAVE");
+
+			//2) Hacer las validaciones correspondientes
+			if((resultado.equals("LISTA_VACIA"))||(resultado.equals("CLAVE_NO_ENCONTRADA"))||(resultado.equals("CLAVE_VACIA")))
+				print(resultado);
+			else
+			{
+				mostrar(resultado);
+				habilitarBotones(false);
+				controlador = "MODIFICAR";
+			}
 		}
 	}
 	

@@ -129,25 +129,6 @@ public class ArticulosAD
 		}
 	}
 	
-	public String crearNodoInicio(String datos)
-	{
-		String respuesta = "Nuevo nodo creado: ";
-		if(primero == null)
-		{
-			primero = new ArticulosDP(datos);
-			ultimo = primero;
-			ultimo.setNext(null);
-			return respuesta + datos;
-		}
-		else
-		{
-			actual = primero;
-			primero = new ArticulosDP(datos);
-			primero.setNext(actual);
-			return respuesta + datos;
-		}
-	}
-	
 	public boolean vacia()
 	{
 		boolean vacia = false;
@@ -318,11 +299,10 @@ public class ArticulosAD
 		}
 	}
 	
-	public String venderArticulos(int cantidad, int existencia, String clave)
+	public String venderArticulos(int cantidad, int existencia)
 	{
 		int nuevaCantidad = 0;
 		String nuevaExistencia = "", datos = "", datosVenta = "";
-		StringTokenizer st;
 	
 		nuevaCantidad = existencia - cantidad;
 		nuevaExistencia = Integer.toString(nuevaCantidad);
@@ -333,24 +313,6 @@ public class ArticulosAD
 		crearNuevoNodoVentas(datos, cantidad);
 		
 		return datos;
-	}
-	
-	public String borrarNodo()
-	{ 
-		if(actual == primero)
-			primero = actual.getNext(); // Nodo siguiente a "Actual"; Segundo nodo
-		else 
-		{
-			if(actual == ultimo)
-			{
-				ultimo = anterior; 
-				ultimo.setNext(null); //Apuntar a un "null" en la siguiente dirección del último nodo.
-			}
-			else
-				anterior.setNext(actual.getNext()); //Unir el nodo anterior con el siguiente del que se borra.
-		}
-		
-		return "Nodo Borrado Exitósamente.";
 	}
 	
 	public String datosListaArchivo(String str)
@@ -398,4 +360,41 @@ public class ArticulosAD
 		return resultado;
 	}
 	
+	public String borrarNodo()
+	{ 
+		if(actual == primero)
+			primero = actual.getNext(); // Nodo siguiente a "Actual"; Segundo nodo
+		else 
+		{
+			if(actual == ultimo)
+			{
+				ultimo = anterior; 
+				ultimo.setNext(null); //Apuntar a un "null" en la siguiente dirección del último nodo.
+			}
+			else
+				anterior.setNext(actual.getNext()); //Unir el nodo anterior con el siguiente del que se borra.
+		}
+		
+		return "Nodo Borrado Exitósamente.";
+	}
+	
+	public String modificarNodo(String datos)
+	{
+		StringTokenizer st = new StringTokenizer(datos, "_");
+		String clave, nombre, marca, existencia, precio;
+		
+		clave   = st.nextToken();
+		nombre  = st.nextToken();
+		marca   = st.nextToken();
+		existencia = st.nextToken();
+		precio  = st.nextToken();
+		
+		actual.setClave(clave);
+		actual.setNombre(nombre);
+		actual.setMarca(marca);
+		actual.setExistencia(existencia);			
+		actual.setPrecio(precio);
+
+		return datos;
+	}
 }
