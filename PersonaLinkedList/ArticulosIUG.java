@@ -28,7 +28,8 @@ public class ArticulosIUG extends Frame implements ActionListener
 	
 	private String clave, datos, nombre, existencia, precio, marca, resultado, controlador;
 	
-	private ArticulosAD lista = new ArticulosAD(); 
+	//private ArticulosAD lista = new ArticulosAD(); 
+	private ArticulosADLL lista = new ArticulosADLL();
 	
 	public ArticulosIUG()
 	{
@@ -336,8 +337,7 @@ public class ArticulosIUG extends Frame implements ActionListener
 		}
 	}
 
-	// Se busca si existe y manda el resultado (Nombre o Clave)	
-	private String consultar(String elemento)
+	private String consultar(String elemento)	// Se busca si existe y manda el resultado (Nombre o Clave)	
 	{
 		boolean vacia = lista.vacia();
 
@@ -568,7 +568,6 @@ public class ArticulosIUG extends Frame implements ActionListener
 				habilitarBotones(false);
 				habilitarCampos(false);
 				controlador = "BORRAR";
-					print("IMPORTANTE: Toma en cuenta que el Dar de Baja un artículo implica que \ndesaparezca su registro del sistema, es por eso que tanto en la lista de\nartículos, como en la de ventas, no aparecerá más. ");
 			}
 		}
 		
@@ -586,7 +585,6 @@ public class ArticulosIUG extends Frame implements ActionListener
 				habilitarBotones(false);
 				tfClave.setEnabled(false);//Evitar que el usuario cambie la clave para proteger funcionamiento correcto del sistema
 				controlador = "MODIFICAR";
-				print("NOTA: Recuerda que modificar el PRECIO implica que la utilidad cambie. \nEs por eso que las ventas registradas que se tengan de un producto\nserán reinicidas con la finalidad de no alterar tu percepción acerca de las \nganancias reales.");
 			}
 		}
 	}

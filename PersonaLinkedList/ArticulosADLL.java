@@ -2,13 +2,17 @@ import javax.swing.*;
 import java.util.*;
 import java.io.*;
 
-public class ArticulosAD
+public class ArticulosADLL
 {
-	private ArticulosDP primero, ultimo, actual, anterior, primerVenta, actualVenta, ultimaVenta, anteriorVenta;
+	private ArticulosDP actual;
 	private PrintWriter archivoSalida;
 	private BufferedReader archivoEntrada;
 	
-	public ArticulosAD()
+	private LinkedList listaArticulos = new LinkedList();
+	private LinkedList listaVentas   = new LinkedList();
+	private int anterior = 0;
+	
+	public ArticulosADLL()
 	{
 		String datos = "";
 		try
@@ -75,48 +79,22 @@ public class ArticulosAD
 	public String crearNodo(String datos)
 	{
 		String respuesta = "Nuevo nodo creado: ";
-		if(primero == null)
-		{
-			primero = new ArticulosDP(datos);
-			ultimo = primero;
-			ultimo.setNext(null);
-			return respuesta + datos;
-		}
-		else
-		{
-			actual = new ArticulosDP(datos);
-			ultimo.setNext(actual); //Link
-			ultimo = actual;
-			ultimo.setNext(null);
-			return respuesta + datos;
-		}
+		listaArticulos.add(new ArticulosDP(datos));
+		return respuesta + datos;
 	}
 	
 	public String crearNodoVentas(String datos)
 	{
 		String respuesta = "Nuevo nodo creado: ";
-		if(primerVenta == null)
-		{
-			primerVenta = new ArticulosDP(datos);
-			ultimaVenta = primerVenta;
-			ultimaVenta.setNext(null);
-			return respuesta + datos;
-		}
-		else
-		{
-			actualVenta = new ArticulosDP(datos);
-			ultimaVenta.setNext(actualVenta); //Link
-			ultimaVenta = actualVenta;
-			ultimaVenta.setNext(null);
-			return respuesta + datos;
-		}
+		listaVentas.add(new ArticulosDP(datos));
+		return respuesta + datos;
 	}
 	
 	public boolean vacia()
 	{
 		boolean vacia = false;
 		
-		if(primero == null)
+		if(listaArticulos.size() == 0)
 			vacia = true;
 		
 		return vacia;
@@ -126,10 +104,10 @@ public class ArticulosAD
 	{
 		String resultado = "";
 		if(str.equals("VENTAS"))
-			resultado = consultarNodosAD(primerVenta, actualVenta);
+			resultado = consultarNodosAD(listaVentas);
 			
 		if(str.equals("ARTICULOS"))
-			resultado = consultarNodosAD(primero, actual);
+			resultado = consultarNodosAD(listaArticulos);
 			
 		if(str.equals("ARTICULOS_ARCHIVO"))
 			resultado = consultarArchivo("Articulos.txt");
@@ -140,48 +118,42 @@ public class ArticulosAD
 		return resultado;
 	}
 	
-	private String consultarNodosAD(ArticulosDP primero, ArticulosDP actual)
+	private String consultarNodosAD(LinkedList lista)
 	{
 		String datos = "";
 		
-		if(primero == null)
+		if(lista.size() == 0)
 			datos = "LISTA_VACIA";
 		else
 		{
-			actual = primero;
-			
-			while(actual != null)
-			{
-				datos = datos + actual.toString() + "\n";
-				actual = actual.getNext();
-			}
+			for(int i = 0; i<lista.size(); i++)
+				datos = datos + lista.get(i).toString() + "\n";
 		}
 		return datos;
 	}
 
 	public String consultarClave(String clave)
 	{
-		String datos = "";
+		String datos = "", id = "";
 		boolean encontrado = false;
+		int i = 0;
 		
-		if(primero == null)
-			datos = "LISTA_VACIA"; 
+		if(listaArticulos.size() == 0)
+			datos = "LISTA_VACIA";
 		else
 		{
-			actual = primero;
-			while((actual != null)&&(encontrado == false))
+			while((i<listaArticulos.size())&&(encontrado == false))
 			{
-				String id = actual.getClave();
-				if(clave.equals(id))
+				actual = (ArticulosDP)listaArticulos.get(i);
+				id = actual.getClave();
+				
+				if(id.equals(clave))
 				{
 					datos = actual.toString();
 					encontrado = true;
-				}
-				else
-				{
-					anterior = actual;
-					actual = actual.getNext();
-				}
+					anterior = i;
+				}	
+				i++;
 			}
 			if(encontrado == false)
 					datos = "CLAVE_NO_ENCONTRADA";
@@ -191,24 +163,26 @@ public class ArticulosAD
 	
 	public String consultarMarca(String marca)
 	{
-		String datos = "";
+		String datos = "", brand = "";
 		boolean encontrado = false;
+		int i = 0;
 		
-		if(primero == null)
+		if(listaArticulos.size() == 0)
 			datos = "LISTA_VACIA";
 		else
 		{
-			actual = primero;
-			while(actual != null)
+			while((i<listaArticulos.size()))
 			{
-				String brand = actual.getMarca();
+				actual = (ArticulosDP)listaArticulos.get(i);
+				brand = actual.getMarca();
+				
 				if(brand.equals(marca))
 				{
 					datos = datos + actual.toString() + "\n";
 					encontrado = true;
-				}
-				anterior = actual;
-				actual = actual.getNext();
+					anterior = i;
+				}	
+				i++;
 			}
 			if(encontrado == false)
 					datos = "MARCA_NO_ENCONTRADA";
@@ -234,10 +208,12 @@ public class ArticulosAD
 	public String venderArticulos(int cantidad, int existencia)
 	{
 		int nuevaCantidad = 0;
-		String nuevaExistencia = "", datos = "", datosVenta = "";
+		String nuevaExistencia = "", datos = "";
 	
 		nuevaCantidad = existencia - cantidad;
 		nuevaExistencia = Integer.toString(nuevaCantidad);
+		
+		actual = (ArticulosDP)listaArticulos.get(anterior);
 		
 		actual.setExistencia(nuevaExistencia);
 		datos = actual.toString();
@@ -251,35 +227,29 @@ public class ArticulosAD
 	{
 		String respuesta = "";
 		if(str.equals("ARTICULOS"))
-			respuesta = datosListaArchivoAD("Articulos.txt", primero, actual);
+			respuesta = datosListaArchivoAD("Articulos.txt", listaArticulos);
 			
 		if(str.equals("VENTAS"))
-			respuesta = datosListaArchivoAD("Ventas.txt", primerVenta, actualVenta);
+			respuesta = datosListaArchivoAD("Ventas.txt", listaVentas);
 			
 		return respuesta;
 	}
 	
-	public String datosListaArchivoAD(String str, ArticulosDP primero, ArticulosDP actual)
+	public String datosListaArchivoAD(String archivo, LinkedList lista)
 	{
-		String resultado = "";
+		String datos = "";
 		
-		if(primero == null)
-			resultado = "LISTA_VACIA";
+		if(lista.size() == 0)
+			datos = "LISTA_VACIA";
 		else
 		{
 			try
 			{
 				//1) Abrir archivo
-				archivoSalida = new PrintWriter(new FileWriter(str));
+				archivoSalida = new PrintWriter(new FileWriter(archivo));
 				
-				//2) Procesar datos 
-				actual = primero;
-			
-				while(actual != null)
-				{
-					archivoSalida.println(actual.toString());
-					actual = actual.getNext();
-				}
+				for(int i = 0; i<lista.size(); i++)
+					archivoSalida.println(lista.get(i).toString());
 				
 				//3) Cerrar Archivo
 				archivoSalida.close();
@@ -289,23 +259,12 @@ public class ArticulosAD
 				System.out.println("Error: " + ioe);
 			}
 		}
-		return resultado;
+		return datos;
 	}
 	
 	public String borrarNodo(String clave)
 	{ 
-		if(actual == primero)
-			primero = actual.getNext(); // Nodo siguiente a "Actual"; Segundo nodo
-		else 
-		{
-			if(actual == ultimo)
-			{
-				ultimo = anterior; 
-				ultimo.setNext(null); //Apuntar a un "null" en la siguiente dirección del último nodo.
-			}
-			else
-				anterior.setNext(actual.getNext()); //Unir el nodo anterior con el siguiente del que se borra.
-		}
+		listaArticulos.remove(anterior);
 		
 		return "Nodo Borrado Exitósamente.";
 	}
@@ -320,6 +279,8 @@ public class ArticulosAD
 		marca   = st.nextToken();
 		existencia = st.nextToken();
 		precio  = st.nextToken();
+		
+		actual = (ArticulosDP)listaArticulos.get(anterior);
 		
 		//Nodo de Artículos
 		actual.setNombre(nombre);
