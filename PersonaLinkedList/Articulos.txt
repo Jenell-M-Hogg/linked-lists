@@ -1,2 +1,10 @@
+<<<<<<< HEAD
 1_Calculadora_30_CASIO_250
 2_Ventilador_6_Massey_80
+=======
+44_Bicycle Race_Queen_200_300
+66_Rubber Soul_The Beatles_10_987
+77_Octavarium_Dream Theater_30_600
+88_Liebe Ist Für Alle Da_Rammstein_28_350
+99_Rosenrot_Rammstein_15_400
+>>>>>>> origin/alpha
